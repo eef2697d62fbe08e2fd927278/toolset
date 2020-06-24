@@ -19,7 +19,7 @@ func main() {
 	http.ListenAndServe(port, router)
 }
 
-// HomeHandler Handles API call to root (/)
+// HomeHandler : Handles API call to root (/)
 func HomeHandler(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("hello home handler")
 
