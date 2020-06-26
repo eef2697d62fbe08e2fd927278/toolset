@@ -2,7 +2,10 @@ package user
 
 import (
 	"crypto/sha256"
+	"database/sql/driver"
 	"encoding/hex"
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 // User : a struct, so new users can be added to the site
@@ -28,4 +31,8 @@ func NewUser(un string, e string, p string) User {
 func (u User) SetPassword(p string) {
 	hashed := sha256.Sum256([]byte(p))
 	u.password = hex.EncodeToString(hashed[:])
+}
+
+func (u User) WriteToDatabase(conn ) {
+	conn.Prepare()
 }

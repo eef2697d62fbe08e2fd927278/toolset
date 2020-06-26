@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	"net/http"
-
 	"github.com/gorilla/mux"
+	"net/http"
+	"github.com/youngtrashbag/toolset/src/note"
 )
 
 func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/", HomeHandler)
+	router.HandleFunc("/note", note.Handler)
 
 	port := ":8000"
 
