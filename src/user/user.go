@@ -2,8 +2,9 @@ package user
 
 import (
 	"crypto/sha256"
-	"database/sql"
 	"encoding/hex"
+
+	"github.com/youngtrashbag/toolset/src/database"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -37,10 +38,7 @@ func (u User) SetPassword(p string) {
 func (u User) Insert() {
 
 	// connection to database TODO: move this to seperate file (database.go) so everything is organized
-	db, err := sql.Open("mysql", "user:password@/database")
-	if err != nil {
-		panic(err.Error())
-	}
+	db := database.Connect()
 	defer db.Close()
 
 	// prepare sql statement
