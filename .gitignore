@@ -131,3 +131,7 @@ fabric.properties
 .history
 
 # End of https://www.toptal.com/developers/gitignore/api/go,visualstudiocode,jetbrains
+
+# mysql credentials
+src/database/*user-credentials.txt*
+src/mysql/*create-user.sql*
