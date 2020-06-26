@@ -2,9 +2,9 @@ package user
 
 import (
 	"crypto/sha256"
-	"database/sql/driver"
-	"encoding/hex"
 	"database/sql"
+	"encoding/hex"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -33,6 +33,26 @@ func (u User) SetPassword(p string) {
 	u.password = hex.EncodeToString(hashed[:])
 }
 
-func (u User) WriteToDatabase(conn ) {
-	conn.Prepare()
+// Insert : saves a user in the database
+func (u User) Insert() {
+
+	// connection to database TODO: move this to seperate file (database.go) so everything is organized
+	db, err := sql.Open("mysql", "user:password@/database")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer db.Close()
+
+	// prepare sql statement
+	insertUser, err := db.Prepare("INSERT INTO tbl_user (email, username, password) VALUES (?, ?, ?")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer insertUser.Close()
+
+	// execute sql statement
+	_, err = insertUser.Exec(u.Email, u.Username, u.password)
+	if err != nil {
+		panic(err.Error())
+	}
 }
