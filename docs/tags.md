@@ -1,19 +1,43 @@
-# Link Table for Tags
+# Tags
 
-## Attributes
+### Attributes
 
-### Note
+#### Id
+
+The id for the tag.
+
+- INT
+- Primary Key
+- Not Null
+- Unique
+- Auto Increment
+- Unsigned
+
+#### Tag
+
+- VARCHAR
+- Not Null
+- Unique
+- max. 20 chars
+
+## Link Table for Tags
+
+### Attributes
+
+#### Note
 
 The foreign Key of the note row/entity.
 
 - INT
 - Not Null
 - Unsigned
+- Foreign Key
 
-## Tag
+### Tag
 
 The Tag that is linked to a Note.
 
-- VARCHAR
+- INT
 - Not Null
-- max. 20 chars
+- Unsigned
+- Foreign Key
