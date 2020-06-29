@@ -1,7 +1,6 @@
 package note
 
 import (
-	"database/sql"
 	"time"
 
 	"github.com/youngtrashbag/toolset/src/database"
@@ -40,11 +39,8 @@ func (n *Note) GetTime() time.Time {
 // Insert : saves a user in the database
 func (n Note) Insert() {
 
-	// connection to database TODO: move this to seperate file (database.go) so everything is organized
-	db, err := sql.Open("mysql", "user:password@/database")
-	if err != nil {
-		panic(err.Error())
-	}
+	// connection to database
+	db := database.InsertConnect()
 	defer db.Close()
 
 	// prepare sql insert note statement

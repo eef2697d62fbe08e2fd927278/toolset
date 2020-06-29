@@ -37,8 +37,8 @@ func (u User) SetPassword(p string) {
 // Insert : saves a user in the database
 func (u User) Insert() {
 
-	// connection to database TODO: move this to seperate file (database.go) so everything is organized
-	db := database.Connect()
+	// connection to database
+	db := database.InsertConnect()
 	defer db.Close()
 
 	// prepare sql statement
