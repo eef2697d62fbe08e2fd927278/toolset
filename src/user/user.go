@@ -18,31 +18,30 @@ type User struct {
 
 // NewUser : returns an object of User struct
 //			with username, password and already hashed password
-func NewUser(un string, e string, p string) User {
+func NewUser(e string, un string, p string) User {
 	var u User
 
-	u.Username = un
 	u.Email = e
+	u.Username = un
 	u.SetPassword(p)
 
 	return u
 }
 
 // SetPassword : sets the Password of the User and automatically hashes it
-func (u User) SetPassword(p string) {
+func (u *User) SetPassword(p string) {
 	hashed := sha256.Sum256([]byte(p))
 	u.password = hex.EncodeToString(hashed[:])
 }
 
 // Insert : saves a user in the database
-func (u User) Insert() {
-
+func (u *User) Insert() {
 	// connection to database
 	db := database.InsertConnect()
 	defer db.Close()
 
 	// prepare sql statement
-	insertUser, err := db.Prepare("INSERT INTO tbl_user (email, username, password) VALUES (?, ?, ?")
+	insertUser, err := db.Prepare("INSERT INTO tbl_user (email, username, password) VALUES (?, ?, ?);")
 	if err != nil {
 		panic(err.Error())
 	}

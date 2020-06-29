@@ -2,15 +2,18 @@ package main
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/gorilla/mux"
 	"github.com/youngtrashbag/toolset/src/note"
+	"github.com/youngtrashbag/toolset/src/user"
 )
 
 func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/", HomeHandler)
 	router.HandleFunc("/note", note.Handler)
+	router.HandleFunc("/createUser", user.CreateUser).Methods(http.MethodPost)
 
 	port := ":8000"
 

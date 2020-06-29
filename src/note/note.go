@@ -44,7 +44,7 @@ func (n Note) Insert() {
 	defer db.Close()
 
 	// prepare sql insert note statement
-	insertUser, err := db.Prepare("INSERT INTO tbl_note (title, content, time) VALUES (?, ?, ?")
+	insertUser, err := db.Prepare("INSERT INTO tbl_note (title, content, time) VALUES (?, ?, ?);")
 	if err != nil {
 		panic(err.Error())
 	}

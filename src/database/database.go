@@ -9,7 +9,7 @@ import (
 
 // InsertConnect : connect to the mysql server with insert privileges
 func InsertConnect() sql.DB {
-	db, err := sql.Open("mysql", "toolset_insert:password@/toolset_db")
+	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
 	if err != nil {
 		panic(err.Error())
 	}
