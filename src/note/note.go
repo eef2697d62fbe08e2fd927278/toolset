@@ -3,6 +3,8 @@ package note
 import (
 	"database/sql"
 	"time"
+
+	"github.com/youngtrashbag/toolset/src/database"
 )
 
 // Note : Struct used for writing note
@@ -30,38 +32,9 @@ func (n *Note) SetTime(t time.Time) {
 	n.time = t
 }
 
-// _convertTime : convert the time from go to a string,
-//					so it complies with mysql standard for DATETIME.
-//					format used is "YYYY-MM-DD hh:mm:ss"
-func (n Note) _convertTime() string {
-	var t string
-
-	// setting date
-	t = string(n.time.Year()) + "-"
-	if int(n.time.Month()) <= 9 {
-		t += "0"
-	}
-	t += string(int(n.time.Month())) + "-"
-	if int(n.time.Day()) <= 9 {
-		t += "0"
-	}
-	t += string(n.time.Day()) + " "
-
-	//setting time
-	if int(n.time.Hour()) <= 9 {
-		t += "0"
-	}
-	t += string(n.time.Hour()) + ":"
-	if int(n.time.Minute()) <= 9 {
-		t += "0"
-	}
-	t += string(n.time.Minute()) + ":"
-	if int(n.time.Second()) <= 9 {
-		t += "0"
-	}
-	t += string(n.time.Second())
-
-	return "2020-06-26 15:30:00"
+// GetTime : returns the time of the note
+func (n *Note) GetTime() time.Time {
+	return n.time
 }
 
 // Insert : saves a user in the database
@@ -82,7 +55,7 @@ func (n Note) Insert() {
 	defer insertUser.Close()
 
 	// execute sql insert note statement
-	noteInsert, err := insertUser.Exec(n.Title, n.Content, n._convertTime())
+	noteInsert, err := insertUser.Exec(n.Title, n.Content, database.ConvertTime(n.GetTime()))
 	if err != nil {
 		panic(err.Error())
 	}
