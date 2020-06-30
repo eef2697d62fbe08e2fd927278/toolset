@@ -4,18 +4,20 @@ import (
 	"time"
 
 	"github.com/youngtrashbag/toolset/src/database"
+	"github.com/youngtrashbag/toolset/src/tag"
 )
 
 // Note : Struct used for writing note
 type Note struct {
+	id      int64
 	Title   string
 	Content string
 	time    time.Time
-	Tags    []string
+	Tags    []tag.Tag
 }
 
 // NewNote : a constructor for the Note struct
-func NewNote(t string, c string, tg []string) Note {
+func NewNote(t string, c string, tg []tag.Tag) Note {
 	var n Note
 
 	n.Title = t
@@ -37,7 +39,7 @@ func (n *Note) GetTime() time.Time {
 }
 
 // Insert : saves a user in the database
-func (n Note) Insert() {
+func (n *Note) Insert() {
 
 	// connection to database
 	db := database.InsertConnect()
@@ -60,7 +62,7 @@ func (n Note) Insert() {
 	id, _ := noteInsert.LastInsertId()
 
 	// prepare sql insert statement into link table (for tags)
-	insertTags, err := db.Prepare("INSERT INTO lktbl_tags (note_id, tag) VALUES (?, ?)")
+	insertTags, err := db.Prepare("INSERT INTO lktbl_tags (note_id, tag) VALUES (?, ?);")
 	defer insertTags.Close()
 
 	// insert a row for each tag
@@ -70,4 +72,14 @@ func (n Note) Insert() {
 			panic(err.Error())
 		}
 	}
+}
+
+// TODO: if its called by using `note.GetNoteByID(1)` will it be a bad redundancy in the name ?
+
+// GetNoteByID : Static function, returns the selected note from the database as an object
+func GetNoteByID(id int64) Note {
+	db := database.SelectConnect()
+	defer db.Close()
+
+	return NewNote("", "test content", []string{"tag1", "tag2"})
 }
