@@ -6,14 +6,14 @@
 
 The id for the tag.
 
-- INT
+- INT (int64)
 - Primary Key
 - Not Null
 - Unique
 - Auto Increment
 - Unsigned
 
-#### Tag
+#### Name
 
 - VARCHAR
 - Not Null
@@ -28,7 +28,7 @@ The id for the tag.
 
 The foreign Key of the note row/entity.
 
-- INT
+- INT (int64)
 - Not Null
 - Unsigned
 - Foreign Key
@@ -37,7 +37,7 @@ The foreign Key of the note row/entity.
 
 The Tag that is linked to a Note.
 
-- INT
+- INT (int64)
 - Not Null
 - Unsigned
 - Foreign Key

@@ -6,7 +6,7 @@
 
 The automatically assigned Id.
 
-- INT
+- INT (int64)
 - Primary Key
 - Not Null
 - Unique
@@ -40,6 +40,6 @@ The Datetime of the Note. Should be relative to the User writing, not to the Ser
 
 Foreign Key linked to the User writing the Note.
 
-- INT
+- INT (int64)
 - Not Null
 - Unsigned

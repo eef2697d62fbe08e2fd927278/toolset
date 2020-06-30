@@ -6,7 +6,7 @@
 
 The automatically assigned Id.
 
-- INT
+- INT (int64)
 - Primary Key
 - Not Null
 - Unique
