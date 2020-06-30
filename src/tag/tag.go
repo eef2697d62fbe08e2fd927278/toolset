@@ -24,8 +24,26 @@ func GetTagByID(id int64) Tag {
 	db := database.SelectConnect()
 	defer db.Close()
 
-	// temporary
-	return NewTag("tag1")
+	tagRows, err := db.Query("SELECT id, name FROM tbl.Tag WHERE id = ?;", id)
+	if err != nil {
+		panic(err.Error())
+	}
+	defer tagRows.Close()
+
+	var t Tag
+	for tagRows.Next() {
+		err := tagRows.Scan(&t.id, &t.Name)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	err = tagRows.Err()
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return t
 }
 
 // GetTagByName : return a tag searched for by its name
@@ -33,6 +51,24 @@ func GetTagByName(name string) Tag {
 	db := database.SelectConnect()
 	defer db.Close()
 
-	// temporary
-	return NewTag("tag1")
+	tagRows, err := db.Query("SELECT id, name FROM tbl.Tag WHERE name = ?;", name)
+	if err != nil {
+		panic(err.Error())
+	}
+	defer tagRows.Close()
+
+	var t Tag
+	for tagRows.Next() {
+		err := tagRows.Scan(&t.id, &t.Name)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	err = tagRows.Err()
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return t
 }

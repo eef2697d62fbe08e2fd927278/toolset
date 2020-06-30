@@ -76,10 +76,15 @@ func (n *Note) Insert() {
 
 // TODO: if its called by using `note.GetNoteByID(1)` will it be a bad redundancy in the name ?
 
-// GetNoteByID : Static function, returns the selected note from the database as an object
+// GetNoteByID : returns the selected note from the database as an object
 func GetNoteByID(id int64) Note {
 	db := database.SelectConnect()
 	defer db.Close()
 
-	return NewNote("", "test content", []string{"tag1", "tag2"})
+	return NewNote("", "content1", []tag.Tag{tag.NewTag("tag1"), tag.NewTag("tag2")})
+}
+
+// GetNoteByTagID : returns a note based on tag
+func GetNoteByTagID(tagID int64) Note {
+	return NewNote("", "content1", []tag.Tag{tag.NewTag("tag1"), tag.NewTag("tag2")})
 }
