@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/youngtrashbag/toolset/src/database"
 	"github.com/youngtrashbag/toolset/src/note"
 	"github.com/youngtrashbag/toolset/src/user"
 )
@@ -17,6 +19,13 @@ func main() {
 
 	// test api handlers
 	router.HandleFunc("/api/note/{id}", note.ByID).Methods(http.MethodGet)
+
+	//test convert
+	t := time.Now()
+	var s string
+
+	database.ConvertTime(&t, &s)
+	fmt.Println(s)
 
 	port := ":8000"
 

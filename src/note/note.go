@@ -40,24 +40,33 @@ func (n *Note) GetTime() time.Time {
 }
 
 // Insert : saves a user in the database
-func (n *Note) Insert() {
+func (n *Note) Insert() int64 {
 
 	// connection to database
 	db := database.InsertConnect()
 	defer db.Close()
 
 	// prepare sql insert note statement
-	insertUser, err := db.Prepare("INSERT INTO tbl_note (title, content, time) VALUES (?, ?, ?);")
+	insertNote, err := db.Prepare("INSERT INTO tbl_note (title, content, time) VALUES (?, ?, ?);")
 	if err != nil {
 		panic(err.Error())
 	}
-	defer insertUser.Close()
+	defer insertNote.Close()
 
+	var time string
+	database.ConvertTime(&n.time, &time)
 	// execute sql insert note statement
-	noteInsert, err := insertUser.Exec(n.Title, n.Content, database.ConvertTimeToMysql(n.GetTime()))
+	result, err := insertNote.Exec(n.Title, n.Content, time)
 	if err != nil {
 		panic(err.Error())
 	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return id
 
 	// TODO: fix the problem with tags
 	//get the id of inserted note
@@ -106,6 +115,6 @@ func GetNoteByID(id int64) Note {
 		n.id = -1
 	}
 
-	n.time = database.ConvertMysqlToTime(timeStr)
+	database.ConvertTime(&n.time, &timeStr)
 	return n
 }

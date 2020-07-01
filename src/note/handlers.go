@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -21,11 +22,14 @@ func ByID(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(req)
-	
-	note := GetNoteByID(int64(params["id"]))
+	id, err := strconv.Atoi(params["id"])
+	if err != nil {
+		panic(err.Error())
+	}
+	note := GetNoteByID(int64(id))
 
-	if note.id = -1 {
-		//post not found
+	if note.id == -1 {
+		//note not found
 		res.WriteHeader(404)
 	}
 	json.NewEncoder(res).Encode(note)

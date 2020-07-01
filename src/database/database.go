@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"strconv"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -47,43 +48,73 @@ func DeleteConnect() sql.DB {
 	return *db
 }
 
-// ConvertTimeToMysql : convert the time from go to a string,
+// ConvertTime : convert the time from go to a string,
 //						so it complies with mysql standard for DATETIME.
 //						format used is "YYYY-MM-DD hh:mm:ss"
-func ConvertTimeToMysql(tm time.Time) string {
-	var t string
+func ConvertTime(t *time.Time, s *string) {
 
-	// setting date
-	t = string(tm.Year()) + "-"
-	if int(tm.Month()) <= 9 {
-		t += "0"
-	}
-	t += string(int(tm.Month())) + "-"
-	if int(tm.Day()) <= 9 {
-		t += "0"
-	}
-	t += string(tm.Day()) + " "
+	if t.IsZero() {
+		var tm time.Time
 
-	//setting time
-	if int(tm.Hour()) <= 9 {
-		t += "0"
-	}
-	t += string(tm.Hour()) + ":"
-	if int(tm.Minute()) <= 9 {
-		t += "0"
-	}
-	t += string(tm.Minute()) + ":"
-	if int(tm.Second()) <= 9 {
-		t += "0"
-	}
-	t += string(tm.Second())
+		var st = *s
 
-	return t
-}
+		year, err := strconv.Atoi(st[0:3])
+		if err != nil {
+			panic(err.Error())
+		}
+		month, err := strconv.Atoi(st[5:6])
+		if err != nil {
+			panic(err.Error())
+		}
+		day, err := strconv.Atoi(st[8:9])
+		if err != nil {
+			panic(err.Error())
+		}
 
-// ConvertMysqlToTime : basically reverse 'ConvertTimeToMysql'
-func ConvertMysqlToTime(tm string) time.Time {
-	var t time.Time
+		hour, err := strconv.Atoi(st[11:12])
+		if err != nil {
+			panic(err.Error())
+		}
+		minute, err := strconv.Atoi(st[14:15])
+		if err != nil {
+			panic(err.Error())
+		}
+		second, err := strconv.Atoi(st[17:18])
+		if err != nil {
+			panic(err.Error())
+		}
 
-	//TODO: chop up string
+		tm = time.Date(year, time.Month(month), day, hour, minute, second, 0, time.UTC)
+		t = &tm
+
+	} else {
+		var tm string
+
+		// setting date
+		tm = string(t.Year()) + "-"
+		if int(t.Month()) <= 9 {
+			tm += "0"
+		}
+		tm += string(int(t.Month())) + "-"
+		if int(t.Day()) <= 9 {
+			tm += "0"
+		}
+		tm += string(t.Day()) + " "
+
+		//setting time
+		if int(t.Hour()) <= 9 {
+			tm += "0"
+		}
+		tm += string(t.Hour()) + ":"
+		if int(t.Minute()) <= 9 {
+			tm += "0"
+		}
+		tm += string(t.Minute()) + ":"
+		if int(t.Second()) <= 9 {
+			tm += "0"
+		}
+		tm += string(t.Second())
+
+		s = &tm
+	}
 }
