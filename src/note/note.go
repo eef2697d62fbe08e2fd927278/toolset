@@ -3,27 +3,28 @@ package note
 import (
 	"time"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/youngtrashbag/toolset/src/database"
-	"github.com/youngtrashbag/toolset/src/tag"
 )
 
 // Note : Struct used for writing note
 type Note struct {
-	id      int64
-	Title   string
-	Content string
-	time    time.Time
-	Tags    []tag.Tag
+	id       int64
+	Title    string
+	Content  string
+	time     time.Time
+	authorId int64
 }
 
 // NewNote : a constructor for the Note struct
-func NewNote(t string, c string, tg []tag.Tag) Note {
+func NewNote(t string, c string) Note {
 	var n Note
 
 	n.Title = t
 	n.Content = c
 	n.SetTime(time.Now())
-	n.Tags = tg
+
+	// TODO: set authorId
 
 	return n
 }
@@ -53,25 +54,24 @@ func (n *Note) Insert() {
 	defer insertUser.Close()
 
 	// execute sql insert note statement
-	noteInsert, err := insertUser.Exec(n.Title, n.Content, database.ConvertTime(n.GetTime()))
+	noteInsert, err := insertUser.Exec(n.Title, n.Content, database.ConvertTimeToMysql(n.GetTime()))
 	if err != nil {
 		panic(err.Error())
 	}
 
+	// TODO: fix the problem with tags
 	//get the id of inserted note
-	id, _ := noteInsert.LastInsertId()
-
+	//id, _ := noteInsert.LastInsertId()
 	// prepare sql insert statement into link table (for tags)
-	insertTags, err := db.Prepare("INSERT INTO lktbl_tags (note_id, tag) VALUES (?, ?);")
-	defer insertTags.Close()
-
+	//insertTags, err := db.Prepare("INSERT INTO lktbl_tags (note_id, tag) VALUES (?, ?);")
+	//defer insertTags.Close()
 	// insert a row for each tag
-	for i := 0; i < len(n.Tags); i++ {
-		_, err = insertTags.Exec(id, n.Tags[i])
-		if err != nil {
-			panic(err.Error())
-		}
-	}
+	//for i := 0; i < len(n.Tags); i++ {
+	//	_, err = insertTags.Exec(id, n.Tags[i])
+	//	if err != nil {
+	//		panic(err.Error())
+	//	}
+	//}
 }
 
 // TODO: if its called by using `note.GetNoteByID(1)` will it be a bad redundancy in the name ?
@@ -81,10 +81,31 @@ func GetNoteByID(id int64) Note {
 	db := database.SelectConnect()
 	defer db.Close()
 
-	return NewNote("", "content1", []tag.Tag{tag.NewTag("tag1"), tag.NewTag("tag2")})
-}
+	tagRows, err := db.Query("SELECT id, title, content, time, author FROM tbl_note WHERE id = ?;", id)
+	if err != nil {
+		panic(err.Error())
+	}
+	defer tagRows.Close()
 
-// GetNoteByTagID : returns a note based on tag
-func GetNoteByTagID(tagID int64) Note {
-	return NewNote("", "content1", []tag.Tag{tag.NewTag("tag1"), tag.NewTag("tag2")})
+	var n Note
+	var timeStr string
+	for tagRows.Next() {
+		err := tagRows.Scan(&n.id, &n.Title, &n.Content, &timeStr, &n.authorId)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	err = tagRows.Err()
+	if err != nil {
+		panic(err.Error())
+	}
+
+	if n.id == 0 && n.Content == "" {
+		// when there is no entry found, return id = -1
+		n.id = -1
+	}
+
+	n.time = database.ConvertMysqlToTime(timeStr)
+	return n
 }

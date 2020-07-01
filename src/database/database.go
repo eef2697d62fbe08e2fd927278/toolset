@@ -47,10 +47,10 @@ func DeleteConnect() sql.DB {
 	return *db
 }
 
-// ConvertTime : convert the time from go to a string,
-//					so it complies with mysql standard for DATETIME.
-//					format used is "YYYY-MM-DD hh:mm:ss"
-func ConvertTime(tm time.Time) string {
+// ConvertTimeToMysql : convert the time from go to a string,
+//						so it complies with mysql standard for DATETIME.
+//						format used is "YYYY-MM-DD hh:mm:ss"
+func ConvertTimeToMysql(tm time.Time) string {
 	var t string
 
 	// setting date
@@ -79,4 +79,11 @@ func ConvertTime(tm time.Time) string {
 	t += string(tm.Second())
 
 	return t
+}
+
+// ConvertMysqlToTime : basically reverse 'ConvertTimeToMysql'
+func ConvertMysqlToTime(tm string) time.Time {
+	var t time.Time
+
+	//TODO: chop up string
 }

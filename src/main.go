@@ -15,6 +15,9 @@ func main() {
 	router.HandleFunc("/note", note.Handler)
 	router.HandleFunc("/createUser", user.CreateUser).Methods(http.MethodPost)
 
+	// test api handlers
+	router.HandleFunc("/api/note/{id}", note.ByID).Methods(http.MethodGet)
+
 	port := ":8000"
 
 	//http.Handle("/", router)
