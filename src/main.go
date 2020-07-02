@@ -38,19 +38,27 @@ func main() {
 
 // HomeHandler : Handles API call to root (/)
 func HomeHandler(res http.ResponseWriter, req *http.Request) {
-	fmt.Println("called HomeHandler")
+	log.Println("called HomeHandler")
+
+	var statusCode int
+	var message string
 
 	if req.Method == http.MethodGet {
-		res.WriteHeader(200)
-		res.Write([]byte("hello get world"))
+		statusCode = 200
+		message = "hello get world"
 	} else if req.Method == http.MethodPost {
-		res.WriteHeader(201)
-		res.Write([]byte("hello post world"))
+		statusCode = 201
+		message = "hello post world"
 	} else if req.Method == http.MethodPut {
-		res.WriteHeader(202)
-		res.Write([]byte("hello put world"))
+		statusCode = 202
+		message = "hello put world"
 	} else if req.Method == http.MethodDelete {
-		res.WriteHeader(204)
-		res.Write([]byte("hello delete world"))
+		statusCode = 204
+		message = "hello delete world"
 	}
+
+	log.Printf("called %s Method on %s\nStatusCode:%d\nMessage:%s", req.Method, req.URL.Path, statusCode, message)
+
+	res.WriteHeader(statusCode)
+	res.Write([]byte(message))
 }

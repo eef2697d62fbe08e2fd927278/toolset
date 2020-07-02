@@ -2,6 +2,7 @@ package note
 
 import (
 	"database/sql"
+	"log"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -93,13 +94,13 @@ func (n *Note) Insert() int64 {
 func GetNoteByID(id int64) Note {
 	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 	defer db.Close()
 
 	tagRows, err := db.Query("SELECT id, title, content, time, author FROM tbl_note WHERE id = ?;", id)
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 	defer tagRows.Close()
 
@@ -108,13 +109,13 @@ func GetNoteByID(id int64) Note {
 	for tagRows.Next() {
 		err := tagRows.Scan(&n.id, &n.Title, &n.Content, &timeStr, &n.authorId)
 		if err != nil {
-			panic(err.Error())
+			log.Panicln(err.Error())
 		}
 	}
 
 	err = tagRows.Err()
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 
 	if n.id == 0 && n.Content == "" {

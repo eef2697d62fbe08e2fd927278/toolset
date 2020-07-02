@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"database/sql"
 	"encoding/hex"
+	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -38,14 +39,14 @@ func (u *User) Insert() error {
 	// connection to database
 	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 	defer db.Close()
 
 	// prepare sql statement
 	insertUser, err := db.Prepare("INSERT INTO tbl_user (email, username, password) VALUES (?, ?, ?);")
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 		return err
 	}
 	defer insertUser.Close()
@@ -53,7 +54,7 @@ func (u *User) Insert() error {
 	// execute sql statement
 	_, err = insertUser.Exec(u.Email, u.Username, u.password)
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 		return err
 	}
 }

@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"log"
 	"strconv"
 	"time"
 
@@ -15,7 +16,7 @@ import (
 func InsertConnect() sql.DB {
 	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 
 	return *db
@@ -26,7 +27,7 @@ func InsertConnect() sql.DB {
 func SelectConnect() sql.DB {
 	db, err := sql.Open("mysql", "toolset_select:password@/toolset_db")
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 
 	return *db
@@ -37,7 +38,7 @@ func SelectConnect() sql.DB {
 func UpdateConnect() sql.DB {
 	db, err := sql.Open("mysql", "toolset_update:password@/toolset_db")
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 
 	return *db
@@ -48,7 +49,7 @@ func UpdateConnect() sql.DB {
 func DeleteConnect() sql.DB {
 	db, err := sql.Open("mysql", "toolset_delete:password@/toolset_db")
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 
 	return *db
@@ -66,28 +67,28 @@ func ConvertTime(t *time.Time, s *string) {
 
 		year, err := strconv.Atoi(st[0:3])
 		if err != nil {
-			panic(err.Error())
+			log.Panicln(err.Error())
 		}
 		month, err := strconv.Atoi(st[5:6])
 		if err != nil {
-			panic(err.Error())
+			log.Panicln(err.Error())
 		}
 		day, err := strconv.Atoi(st[8:9])
 		if err != nil {
-			panic(err.Error())
+			log.Panicln(err.Error())
 		}
 
 		hour, err := strconv.Atoi(st[11:12])
 		if err != nil {
-			panic(err.Error())
+			log.Panicln(err.Error())
 		}
 		minute, err := strconv.Atoi(st[14:15])
 		if err != nil {
-			panic(err.Error())
+			log.Panicln(err.Error())
 		}
 		second, err := strconv.Atoi(st[17:18])
 		if err != nil {
-			panic(err.Error())
+			log.Panicln(err.Error())
 		}
 
 		tm = time.Date(year, time.Month(month), day, hour, minute, second, 0, time.UTC)

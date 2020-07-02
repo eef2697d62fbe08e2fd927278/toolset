@@ -12,5 +12,5 @@ func CreateUser(res http.ResponseWriter, req *http.Request) {
 	var u = NewUser("test@email.com", "username", "password")
 
 	u.Insert()
-	log.Done("Sucessfully inserted user into db")
+	log.Println("Sucessfully inserted user into db")
 }
