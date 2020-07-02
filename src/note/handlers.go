@@ -36,3 +36,4 @@ func GetByID(res http.ResponseWriter, req *http.Request) {
 
 	json.NewEncoder(res).Encode(note)
 }
+

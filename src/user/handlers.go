@@ -12,3 +12,4 @@ func CreateUser(res http.ResponseWriter, req *http.Request) {
 	u.Insert()
 	log.Println("Sucessfully inserted user into db")
 }
+

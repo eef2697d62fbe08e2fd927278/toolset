@@ -12,8 +12,8 @@ import (
 // Note : Struct used for writing note
 type Note struct {
 	id       int64
-	Title    string
-	Content  string
+	title    string
+	content  string
 	time     time.Time
 	authorId int64
 }
@@ -22,24 +22,15 @@ type Note struct {
 func NewNote(t string, c string) Note {
 	var n Note
 
-	n.Title = t
-	n.Content = c
-	n.SetTime(time.Now())
+	n.title = t
+	n.content = c
+	n.time = time.Now()
 
 	// TODO: set authorId
 
 	return n
 }
 
-// SetTime : sets time of note
-func (n *Note) SetTime(t time.Time) {
-	n.time = t
-}
-
-// GetTime : returns the time of the note
-func (n *Note) GetTime() time.Time {
-	return n.time
-}
 
 // Insert : saves a user in the database
 func (n *Note) Insert() int64 {
@@ -61,7 +52,7 @@ func (n *Note) Insert() int64 {
 	var time string
 	database.ConvertTime(&n.time, &time)
 	// execute sql insert note statement
-	result, err := insertNote.Exec(n.Title, n.Content, time)
+	result, err := insertNote.Exec(n.title, n.content, time)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -107,7 +98,7 @@ func GetNoteByID(id int64) Note {
 	var n Note
 	var timeStr string
 	for tagRows.Next() {
-		err := tagRows.Scan(&n.id, &n.Title, &n.Content, &timeStr, &n.authorId)
+		err := tagRows.Scan(&n.id, &n.title, &n.content, &timeStr, &n.authorId)
 		if err != nil {
 			log.Panicln(err.Error())
 		}
@@ -118,7 +109,7 @@ func GetNoteByID(id int64) Note {
 		log.Panicln(err.Error())
 	}
 
-	if n.id == 0 && n.Content == "" {
+	if n.id == 0 && n.content == "" {
 		// when there is no entry found, return id = -1
 		n.id = -1
 	}
@@ -126,3 +117,4 @@ func GetNoteByID(id int64) Note {
 	database.ConvertTime(&n.time, &timeStr)
 	return n
 }
+

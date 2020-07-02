@@ -38,8 +38,6 @@ func main() {
 
 // HomeHandler : Handles API call to root (/)
 func HomeHandler(res http.ResponseWriter, req *http.Request) {
-	log.Println("called HomeHandler")
-
 	var statusCode int
 	var message string
 
@@ -55,10 +53,13 @@ func HomeHandler(res http.ResponseWriter, req *http.Request) {
 	} else if req.Method == http.MethodDelete {
 		statusCode = 204
 		message = "hello delete world"
+	} else {
+		statusCode = 404
 	}
 
-	log.Printf("called %s Method on %s\nStatusCode:%d\nMessage:%s", req.Method, req.URL.Path, statusCode, message)
+	log.Printf("%s Method on \"%s\", StatusCode:%d, Message:\"%s\"", req.Method, req.URL.Path, statusCode, message)
 
 	res.WriteHeader(statusCode)
 	res.Write([]byte(message))
 }
+

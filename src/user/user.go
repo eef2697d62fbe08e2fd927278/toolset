@@ -11,8 +11,8 @@ import (
 
 // User : a struct, so new users can be added to the site
 type User struct {
-	Username string
-	Email    string
+	username string
+	email    string
 	password string
 }
 
@@ -21,17 +21,17 @@ type User struct {
 func NewUser(e string, un string, p string) User {
 	var u User
 
-	u.Email = e
-	u.Username = un
-	u.SetPassword(p)
+	u.email = e
+	u.username = un
+	u.password = hashPassword(p)
 
 	return u
 }
 
-// SetPassword : sets the Password of the User and automatically hashes it
-func (u *User) SetPassword(p string) {
+// hashPassword : sets the Password of the User and automatically hashes it
+func hashPassword(p string) string {
 	hashed := sha256.Sum256([]byte(p))
-	u.password = hex.EncodeToString(hashed[:])
+	return hex.EncodeToString(hashed[:])
 }
 
 // Insert : saves a user in the database
@@ -51,8 +51,9 @@ func (u *User) Insert() {
 	defer insertUser.Close()
 
 	// execute sql statement
-	_, err = insertUser.Exec(u.Email, u.Username, u.password)
+	_, err = insertUser.Exec(u.email, u.username, u.password)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
 }
+
