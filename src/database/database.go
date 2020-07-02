@@ -8,7 +8,10 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+// TODO: maybe remove these functions, becuase really it just adds another layer of complexity
+
 // InsertConnect : connect to the mysql server with insert privileges
+// note: defer closing the db object after assigning it
 func InsertConnect() sql.DB {
 	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
 	if err != nil {
@@ -19,6 +22,7 @@ func InsertConnect() sql.DB {
 }
 
 // SelectConnect : connect to mysql server with select privileges
+// note: defer closing the db object after assigning it
 func SelectConnect() sql.DB {
 	db, err := sql.Open("mysql", "toolset_select:password@/toolset_db")
 	if err != nil {
@@ -29,6 +33,7 @@ func SelectConnect() sql.DB {
 }
 
 // UpdateConnect : connect to mysql server with update privileges
+// note: defer closing the db object after assigning it
 func UpdateConnect() sql.DB {
 	db, err := sql.Open("mysql", "toolset_update:password@/toolset_db")
 	if err != nil {
@@ -39,6 +44,7 @@ func UpdateConnect() sql.DB {
 }
 
 // DeleteConnect : connect to mysql server with delete privileges
+// note: defer closing the db object after assigning it
 func DeleteConnect() sql.DB {
 	db, err := sql.Open("mysql", "toolset_delete:password@/toolset_db")
 	if err != nil {
@@ -49,8 +55,8 @@ func DeleteConnect() sql.DB {
 }
 
 // ConvertTime : convert the time from go to a string,
-//						so it complies with mysql standard for DATETIME.
-//						format used is "YYYY-MM-DD hh:mm:ss"
+// so it complies with mysql standard for DATETIME.
+// format used is "YYYY-MM-DD hh:mm:ss"
 func ConvertTime(t *time.Time, s *string) {
 
 	if t.IsZero() {
@@ -87,7 +93,7 @@ func ConvertTime(t *time.Time, s *string) {
 		tm = time.Date(year, time.Month(month), day, hour, minute, second, 0, time.UTC)
 		t = &tm
 
-	} else {
+	} else if len(*s) <= 0 {
 		var tm string
 
 		// setting date

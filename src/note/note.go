@@ -1,6 +1,7 @@
 package note
 
 import (
+	"database/sql"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -43,7 +44,10 @@ func (n *Note) GetTime() time.Time {
 func (n *Note) Insert() int64 {
 
 	// connection to database
-	db := database.InsertConnect()
+	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
+	if err != nil {
+		panic(err.Error())
+	}
 	defer db.Close()
 
 	// prepare sql insert note statement
@@ -87,7 +91,10 @@ func (n *Note) Insert() int64 {
 
 // GetNoteByID : returns the selected note from the database as an object
 func GetNoteByID(id int64) Note {
-	db := database.SelectConnect()
+	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
+	if err != nil {
+		panic(err.Error())
+	}
 	defer db.Close()
 
 	tagRows, err := db.Query("SELECT id, title, content, time, author FROM tbl_note WHERE id = ?;", id)

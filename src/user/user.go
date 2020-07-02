@@ -2,9 +2,8 @@ package user
 
 import (
 	"crypto/sha256"
+	"database/sql"
 	"encoding/hex"
-
-	"github.com/youngtrashbag/toolset/src/database"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -35,15 +34,19 @@ func (u *User) SetPassword(p string) {
 }
 
 // Insert : saves a user in the database
-func (u *User) Insert() {
+func (u *User) Insert() error {
 	// connection to database
-	db := database.InsertConnect()
+	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
+	if err != nil {
+		panic(err.Error())
+	}
 	defer db.Close()
 
 	// prepare sql statement
 	insertUser, err := db.Prepare("INSERT INTO tbl_user (email, username, password) VALUES (?, ?, ?);")
 	if err != nil {
 		panic(err.Error())
+		return err
 	}
 	defer insertUser.Close()
 
@@ -51,5 +54,6 @@ func (u *User) Insert() {
 	_, err = insertUser.Exec(u.Email, u.Username, u.password)
 	if err != nil {
 		panic(err.Error())
+		return err
 	}
 }

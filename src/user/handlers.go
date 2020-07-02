@@ -1,8 +1,10 @@
 package user
 
 import (
-	"fmt"
+	"log"
 	"net/http"
+
+	"google.golang.org/appengine/log"
 )
 
 // CreateUser : creates a user
@@ -10,5 +12,5 @@ func CreateUser(res http.ResponseWriter, req *http.Request) {
 	var u = NewUser("test@email.com", "username", "password")
 
 	u.Insert()
-	fmt.Println("Sucessfully inserted user into db")
+	log.Done("Sucessfully inserted user into db")
 }
