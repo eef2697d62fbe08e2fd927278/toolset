@@ -52,7 +52,7 @@ func (n *Note) Insert() int64 {
 	defer db.Close()
 
 	// prepare sql insert note statement
-	insertNote, err := db.Prepare("INSERT INTO tbl_note (title, content, time) VALUES (?, ?, ?);")
+	insertNote, err := db.Prepare("INSERT INTO tbl_note (title, content, time) VALUES (?, ?, ?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -98,7 +98,7 @@ func GetNoteByID(id int64) Note {
 	}
 	defer db.Close()
 
-	tagRows, err := db.Query("SELECT id, title, content, time, author FROM tbl_note WHERE id = ?;", id)
+	tagRows, err := db.Query("SELECT id, title, content, time, author FROM tbl_note WHERE id = ?", id)
 	if err != nil {
 		log.Panicln(err.Error())
 	}

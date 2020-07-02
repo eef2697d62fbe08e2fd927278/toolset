@@ -44,7 +44,7 @@ func (u *User) Insert() {
 	defer db.Close()
 
 	// prepare sql statement
-	insertUser, err := db.Prepare("INSERT INTO tbl_user (email, username, password) VALUES (?, ?, ?);")
+	insertUser, err := db.Prepare("INSERT INTO tbl_user (email, username, password) VALUES (?, ?, ?)")
 	if err != nil {
 		log.Panicln(err.Error())
 	}
