@@ -3,8 +3,6 @@ package user
 import (
 	"log"
 	"net/http"
-
-	"google.golang.org/appengine/log"
 )
 
 // CreateUser : creates a user

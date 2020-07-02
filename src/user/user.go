@@ -35,7 +35,7 @@ func (u *User) SetPassword(p string) {
 }
 
 // Insert : saves a user in the database
-func (u *User) Insert() error {
+func (u *User) Insert() {
 	// connection to database
 	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
 	if err != nil {
@@ -47,7 +47,6 @@ func (u *User) Insert() error {
 	insertUser, err := db.Prepare("INSERT INTO tbl_user (email, username, password) VALUES (?, ?, ?);")
 	if err != nil {
 		log.Panicln(err.Error())
-		return err
 	}
 	defer insertUser.Close()
 
@@ -55,6 +54,5 @@ func (u *User) Insert() error {
 	_, err = insertUser.Exec(u.Email, u.Username, u.password)
 	if err != nil {
 		log.Panicln(err.Error())
-		return err
 	}
 }
