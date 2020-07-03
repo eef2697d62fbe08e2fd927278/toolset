@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql" // this is needed for mysql
 )
 
 // Tag : struct for tags, which are used to organise notes
@@ -24,7 +24,7 @@ func NewTag(n string) Tag {
 	return t
 }
 
-// Insert : saves tag to db
+// Insert : saves tag to db and returns id of entry
 func (t *Tag) Insert() int64 {
 	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
 	if err != nil {
@@ -45,16 +45,16 @@ func (t *Tag) Insert() int64 {
 		log.Panicln(err.Error())
 	}
 
-	id, err := result.LastInsertId()
+	tagID, err := result.LastInsertId()
 	if err != nil {
 		log.Panicln(err.Error())
 	}
 
-	return id
+	return tagID
 }
 
-// GetById : returns a tag object from the database
-func GetById(id int64) Tag {
+// GetByID : returns a tag object from the database
+func GetByID(id int64) Tag {
 	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
 	if err != nil {
 		log.Panicln(err.Error())
@@ -112,4 +112,25 @@ func GetByName(name string) Tag {
 	}
 
 	return t
+}
+
+// LinkNote : this links the noteID and the tagId together via the linktable
+func LinkNote(nID, tID int64) {
+	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
+	if err != nil {
+		log.Panicln(err.Error())
+	}
+	defer db.Close()
+
+	linkTag, err := db.Prepare("INSERT INTO lktbl_tag (note_id, tag_id) VALUES (?, ?)")
+	if err != nil {
+		log.Panicln(err.Error())
+	}
+	defer linkTag.Close()
+
+	_, err = linkTag.Exec(nID, tID)
+	if err != nil {
+		log.Panicln(err.Error())
+	}
+
 }

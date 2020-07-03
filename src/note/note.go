@@ -7,6 +7,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql" // this is needed for mysql
 	"github.com/youngtrashbag/toolset/src/database"
+	"github.com/youngtrashbag/toolset/src/tag"
 )
 
 // Note : Struct used for writing note
@@ -31,7 +32,7 @@ func NewNote(t string, c string) Note {
 	return n
 }
 
-// Insert : saves a user in the database
+// Insert : saves a user in the database and returns the id of said db entry
 func (n *Note) Insert() int64 {
 
 	// connection to database
@@ -56,26 +57,27 @@ func (n *Note) Insert() int64 {
 		log.Panicln(err.Error())
 	}
 
-	id, err := result.LastInsertId()
+	noteID, err := result.LastInsertId()
 	if err != nil {
 		log.Panicln(err.Error())
 	}
 
-	return id
+	// TODO: actually take the tags from somewhere real
+	// the tags as strings
+	var tagsS []string
 
-	// TODO: fix the problem with tags
-	//get the id of inserted note
-	//id, _ := noteInsert.LastInsertId()
-	// prepare sql insert statement into link table (for tags)
-	//insertTags, err := db.Prepare("INSERT INTO lktbl_tags (note_id, tag) VALUES (?, ?);")
-	//defer insertTags.Close()
-	// insert a row for each tag
-	//for i := 0; i < len(n.Tags); i++ {
-	//	_, err = insertTags.Exec(id, n.Tags[i])
-	//	if err != nil {
-	//		log.Panicln(err.Error())
-	//	}
-	//}
+	for _, t := range tagsS {
+		tg := tag.GetByName(t)
+
+		tID := tg.ID
+		// if the note is not yet in the db it will be inserted
+		if tID == -1 {
+			tID = tg.Insert()
+		}
+		tag.LinkNote(noteID, tID)
+	}
+
+	return noteID
 }
 
 // GetByID : returns the selected note from the database as an object
@@ -113,25 +115,4 @@ func GetByID(id int64) Note {
 
 	database.ConvertTime(&n.CreationDate, &timeStr)
 	return n
-}
-
-// LinkTag : this links the noteID and the tagId together via the linktable
-func LinkTag(nID, tID int64) {
-	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
-	if err != nil {
-		log.Panicln(err.Error())
-	}
-	defer db.Close()
-
-	linkTag, err := db.Prepare("INSERT INTO lktbl_tag (note_id, tag_id) VALUES (?, ?)")
-	if err != nil {
-		log.Panicln(err.Error())
-	}
-	defer linkTag.Close()
-
-	_, err = linkTag.Exec(nID, tID)
-	if err != nil {
-		log.Panicln(err.Error())
-	}
-
 }

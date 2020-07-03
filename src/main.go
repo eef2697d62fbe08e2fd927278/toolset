@@ -18,7 +18,7 @@ func main() {
 	router.HandleFunc("/note", note.Handler)
 
 	// test api handlers
-	router.HandleFunc("/api/user", user.CreateUser).Headers("Accept", "application/json")
+	router.HandleFunc("/api/user", user.HandleCreateUser).Headers("Accept", "application/json")
 	router.HandleFunc("/api/note/{id}", note.HandleByID)
 
 	//test convert

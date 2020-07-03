@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql" // this is needed for mysql
 	"github.com/youngtrashbag/toolset/src/database"
 )
 
@@ -39,7 +39,7 @@ func hashPassword(p string) string {
 }
 
 // Insert : saves a user in the database
-func (u *User) Insert() {
+func (u *User) Insert() int64 {
 	// connection to database
 	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
 	if err != nil {
@@ -57,8 +57,15 @@ func (u *User) Insert() {
 	var time string
 	database.ConvertTime(&u.CreationDate, &time)
 	// execute sql statement
-	_, err = insertUser.Exec(u.Email, u.Username, u.password, time)
+	result, err := insertUser.Exec(u.Email, u.Username, u.password, time)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
+
+	userID, err := result.LastInsertId()
+	if err != nil {
+		log.Panicln(err.Error())
+	}
+
+	return userID
 }
