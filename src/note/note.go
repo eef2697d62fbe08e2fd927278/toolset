@@ -11,11 +11,11 @@ import (
 
 // Note : Struct used for writing note
 type Note struct {
-	id       int64
-	title    string
-	content  string
-	time     time.Time
-	authorId int64
+	id           int64     `json: id`
+	title        string    `json: title`
+	content      string    `json: content`
+	creationDate time.Time `json: datetime`
+	authorId     int64     `json: author_id`
 }
 
 // NewNote : a constructor for the Note struct
@@ -37,14 +37,14 @@ func (n *Note) Insert() int64 {
 	// connection to database
 	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error)
 	}
 	defer db.Close()
 
 	// prepare sql insert note statement
 	insertNote, err := db.Prepare("INSERT INTO tbl_note (title, content, time) VALUES (?, ?, ?)")
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 	defer insertNote.Close()
 
@@ -53,12 +53,12 @@ func (n *Note) Insert() int64 {
 	// execute sql insert note statement
 	result, err := insertNote.Exec(n.title, n.content, time)
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 
 	id, err := result.LastInsertId()
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 
 	return id
@@ -73,15 +73,13 @@ func (n *Note) Insert() int64 {
 	//for i := 0; i < len(n.Tags); i++ {
 	//	_, err = insertTags.Exec(id, n.Tags[i])
 	//	if err != nil {
-	//		panic(err.Error())
+	//		log.Panicln(err.Error())
 	//	}
 	//}
 }
 
-// TODO: if its called by using `note.GetNoteByID(1)` will it be a bad redundancy in the name ?
-
-// GetNoteByID : returns the selected note from the database as an object
-func GetNoteByID(id int64) Note {
+// GetById : returns the selected note from the database as an object
+func GetById(id int64) Note {
 	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
 	if err != nil {
 		log.Panicln(err.Error())
@@ -117,11 +115,23 @@ func GetNoteByID(id int64) Note {
 	return n
 }
 
-func LinkTag(nID, tID int64) {
+// LinkTag : this links the noteID and the tagId together via the linktable
+func LinkTag(nId, tId int64) {
 	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
 	if err != nil {
 		log.Panicln(err.Error())
 	}
 	defer db.Close()
+
+	linkTag, err := db.Prepare("INSERT INTO lktbl_tag (note_id, tag_id) VALUES (?, ?)")
+	if err != nil {
+		log.Panicln(err.Error())
+	}
+	defer linkTag.Close()
+
+	_, err := linkTag.Exec(nId, tId)
+	if err != nil {
+		log.Panicln(err.Error())
+	}
 
 }

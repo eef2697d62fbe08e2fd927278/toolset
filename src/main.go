@@ -18,8 +18,8 @@ func main() {
 	router.HandleFunc("/note", note.Handler)
 
 	// test api handlers
-	router.HandleFunc("/api/user", user.CreateUser).Methods(http.MethodPost)
-	router.HandleFunc("/api/note/{id}", note.GetByID).Methods(http.MethodGet)
+	router.HandleFunc("/api/user", user.CreateUser).Headers("Accept", "application/json")
+	router.HandleFunc("/api/note/{id}", note.HandleById)
 
 	//test convert
 	t := time.Now()
@@ -62,4 +62,3 @@ func HomeHandler(res http.ResponseWriter, req *http.Request) {
 	res.WriteHeader(statusCode)
 	res.Write([]byte(message))
 }
-

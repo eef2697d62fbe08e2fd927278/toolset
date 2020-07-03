@@ -5,15 +5,17 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"log"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 // User : a struct, so new users can be added to the site
 type User struct {
-	username string
-	email    string
-	password string
+	username     string `json: username`
+	email        string `json: email`
+	password     string
+	creationDate time.Time `json: creation_date`
 }
 
 // NewUser : returns an object of User struct
@@ -56,4 +58,3 @@ func (u *User) Insert() {
 		log.Panicln(err.Error())
 	}
 }
-

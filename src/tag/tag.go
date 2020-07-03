@@ -4,14 +4,16 @@ import (
 	"database/sql"
 	"log"
 	"strings"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 // Tag : struct for tags, which are used to organise notes
 type Tag struct {
-	id   int64
-	name string
+	id           int64
+	name         string    `json: name`
+	creationDate time.Time `json: creation_date`
 }
 
 // NewTag : returns a tag object
@@ -33,26 +35,26 @@ func (t *Tag) Insert() int64 {
 	// prepare sql insert note statement
 	insertNote, err := db.Prepare("INSERT INTO tbl_tag (name) VALUES (?)")
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 	defer insertNote.Close()
 
 	// execute sql insert note statement
 	result, err := insertNote.Exec(t.name)
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 
 	id, err := result.LastInsertId()
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 
 	return id
 }
 
-// GetTagByID : returns a tag object from the database
-func GetTagByID(id int64) Tag {
+// GetById : returns a tag object from the database
+func GetById(id int64) Tag {
 	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
 	if err != nil {
 		log.Panicln(err.Error())
@@ -61,7 +63,7 @@ func GetTagByID(id int64) Tag {
 
 	tagRows, err := db.Query("SELECT id, name FROM tbl.Tag WHERE id = ?", id)
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 	defer tagRows.Close()
 
@@ -69,20 +71,20 @@ func GetTagByID(id int64) Tag {
 	for tagRows.Next() {
 		err := tagRows.Scan(&t.id, &t.name)
 		if err != nil {
-			panic(err.Error())
+			log.Panicln(err.Error())
 		}
 	}
 
 	err = tagRows.Err()
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 
 	return t
 }
 
-// GetTagByName : return a tag searched for by its name
-func GetTagByName(name string) Tag {
+// GetByName : return a tag searched for by its name
+func GetByName(name string) Tag {
 	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
 	if err != nil {
 		log.Panicln(err.Error())
@@ -92,7 +94,7 @@ func GetTagByName(name string) Tag {
 	name = strings.ToLower(name)
 	tagRows, err := db.Query("SELECT id, name FROM tbl.Tag WHERE name = ?", name)
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 	defer tagRows.Close()
 
@@ -100,13 +102,13 @@ func GetTagByName(name string) Tag {
 	for tagRows.Next() {
 		err := tagRows.Scan(&t.id, &t.name)
 		if err != nil {
-			panic(err.Error())
+			log.Panicln(err.Error())
 		}
 	}
 
 	err = tagRows.Err()
 	if err != nil {
-		panic(err.Error())
+		log.Panicln(err.Error())
 	}
 
 	return t
