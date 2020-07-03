@@ -31,7 +31,6 @@ func NewNote(t string, c string) Note {
 	return n
 }
 
-
 // Insert : saves a user in the database
 func (n *Note) Insert() int64 {
 
@@ -118,3 +117,11 @@ func GetNoteByID(id int64) Note {
 	return n
 }
 
+func LinkTag(nID, tID int64) {
+	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
+	if err != nil {
+		log.Panicln(err.Error())
+	}
+	defer db.Close()
+
+}
