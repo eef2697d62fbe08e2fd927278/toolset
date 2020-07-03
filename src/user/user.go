@@ -8,14 +8,15 @@ import (
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/youngtrashbag/toolset/src/database"
 )
 
 // User : a struct, so new users can be added to the site
 type User struct {
-	username     string `json: username`
-	email        string `json: email`
+	Username     string `json:"username"`
+	Email        string `json:"email"`
 	password     string
-	creationDate time.Time `json: creation_date`
+	CreationDate time.Time `json:"creation_date"`
 }
 
 // NewUser : returns an object of User struct
@@ -23,9 +24,10 @@ type User struct {
 func NewUser(e string, un string, p string) User {
 	var u User
 
-	u.email = e
-	u.username = un
+	u.Email = e
+	u.Username = un
 	u.password = hashPassword(p)
+	u.CreationDate = time.Now()
 
 	return u
 }
@@ -46,14 +48,16 @@ func (u *User) Insert() {
 	defer db.Close()
 
 	// prepare sql statement
-	insertUser, err := db.Prepare("INSERT INTO tbl_user (email, username, password) VALUES (?, ?, ?)")
+	insertUser, err := db.Prepare("INSERT INTO tbl_user (email, username, password, creationDate) VALUES (?, ?, ?, ?)")
 	if err != nil {
 		log.Panicln(err.Error())
 	}
 	defer insertUser.Close()
 
+	var time string
+	database.ConvertTime(&u.CreationDate, &time)
 	// execute sql statement
-	_, err = insertUser.Exec(u.email, u.username, u.password)
+	_, err = insertUser.Exec(u.Email, u.Username, u.password, time)
 	if err != nil {
 		log.Panicln(err.Error())
 	}

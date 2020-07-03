@@ -11,15 +11,15 @@ import (
 
 // Tag : struct for tags, which are used to organise notes
 type Tag struct {
-	id           int64
-	name         string    `json: name`
-	creationDate time.Time `json: creation_date`
+	ID           int64
+	Name         string    `json:"name"`
+	CreationDate time.Time `json:"creation_date"`
 }
 
 // NewTag : returns a tag object
 func NewTag(n string) Tag {
 	var t Tag
-	t.name = n
+	t.Name = n
 
 	return t
 }
@@ -40,7 +40,7 @@ func (t *Tag) Insert() int64 {
 	defer insertNote.Close()
 
 	// execute sql insert note statement
-	result, err := insertNote.Exec(t.name)
+	result, err := insertNote.Exec(t.Name)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -69,7 +69,7 @@ func GetById(id int64) Tag {
 
 	var t Tag
 	for tagRows.Next() {
-		err := tagRows.Scan(&t.id, &t.name)
+		err := tagRows.Scan(&t.ID, &t.Name)
 		if err != nil {
 			log.Panicln(err.Error())
 		}
@@ -100,7 +100,7 @@ func GetByName(name string) Tag {
 
 	var t Tag
 	for tagRows.Next() {
-		err := tagRows.Scan(&t.id, &t.name)
+		err := tagRows.Scan(&t.ID, &t.Name)
 		if err != nil {
 			log.Panicln(err.Error())
 		}

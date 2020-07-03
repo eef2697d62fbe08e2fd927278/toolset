@@ -19,8 +19,8 @@ func Handler(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-// HandleById : handles the requests to notes with a certain id
-func HandleById(res http.ResponseWriter, req *http.Request) {
+// HandleByID : handles the requests to notes with a certain id
+func HandleByID(res http.ResponseWriter, req *http.Request) {
 
 	if req.Method == http.MethodGet {
 		// requesting a note
@@ -33,7 +33,7 @@ func HandleById(res http.ResponseWriter, req *http.Request) {
 		}
 		note := GetById(int64(id))
 
-		if note.id == -1 {
+		if note.ID == -1 {
 			//note not found
 			res.WriteHeader(404)
 		}

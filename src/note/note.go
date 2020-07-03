@@ -11,20 +11,20 @@ import (
 
 // Note : Struct used for writing note
 type Note struct {
-	id           int64     `json: id`
-	title        string    `json: title`
-	content      string    `json: content`
-	creationDate time.Time `json: datetime`
-	authorId     int64     `json: author_id`
+	ID           int64     `json:"id"`
+	Title        string    `json:"title"`
+	Content      string    `json:"content"`
+	CreationDate time.Time `json:"datetime"`
+	AuthorID     int64     `json:"author_id"`
 }
 
 // NewNote : a constructor for the Note struct
 func NewNote(t string, c string) Note {
 	var n Note
 
-	n.title = t
-	n.content = c
-	n.time = time.Now()
+	n.Title = t
+	n.Content = c
+	n.CreationDate = time.Now()
 
 	// TODO: set authorId
 
@@ -49,9 +49,9 @@ func (n *Note) Insert() int64 {
 	defer insertNote.Close()
 
 	var time string
-	database.ConvertTime(&n.time, &time)
+	database.ConvertTime(&n.CreationDate, &time)
 	// execute sql insert note statement
-	result, err := insertNote.Exec(n.title, n.content, time)
+	result, err := insertNote.Exec(n.Title, n.Content, time)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -95,7 +95,7 @@ func GetById(id int64) Note {
 	var n Note
 	var timeStr string
 	for tagRows.Next() {
-		err := tagRows.Scan(&n.id, &n.title, &n.content, &timeStr, &n.authorId)
+		err := tagRows.Scan(&n.ID, &n.Title, &n.Content, &timeStr, &n.AuthorId)
 		if err != nil {
 			log.Panicln(err.Error())
 		}
@@ -106,17 +106,17 @@ func GetById(id int64) Note {
 		log.Panicln(err.Error())
 	}
 
-	if n.id == 0 && n.content == "" {
+	if n.ID == 0 && n.Content == "" {
 		// when there is no entry found, return id = -1
-		n.id = -1
+		n.ID = -1
 	}
 
-	database.ConvertTime(&n.time, &timeStr)
+	database.ConvertTime(&n.CreationDate, &timeStr)
 	return n
 }
 
 // LinkTag : this links the noteID and the tagId together via the linktable
-func LinkTag(nId, tId int64) {
+func LinkTag(nID, tID int64) {
 	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
 	if err != nil {
 		log.Panicln(err.Error())
@@ -129,7 +129,7 @@ func LinkTag(nId, tId int64) {
 	}
 	defer linkTag.Close()
 
-	_, err := linkTag.Exec(nId, tId)
+	_, err := linkTag.Exec(nID, tID)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
