@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql" // this is needed for mysql
 	"github.com/youngtrashbag/toolset/src/database"
 )
 
@@ -37,7 +37,7 @@ func (n *Note) Insert() int64 {
 	// connection to database
 	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
 	if err != nil {
-		log.Panicln(err.Error)
+		log.Panicln(err.Error())
 	}
 	defer db.Close()
 
@@ -78,8 +78,8 @@ func (n *Note) Insert() int64 {
 	//}
 }
 
-// GetById : returns the selected note from the database as an object
-func GetById(id int64) Note {
+// GetByID : returns the selected note from the database as an object
+func GetByID(id int64) Note {
 	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
 	if err != nil {
 		log.Panicln(err.Error())
@@ -95,7 +95,7 @@ func GetById(id int64) Note {
 	var n Note
 	var timeStr string
 	for tagRows.Next() {
-		err := tagRows.Scan(&n.ID, &n.Title, &n.Content, &timeStr, &n.AuthorId)
+		err := tagRows.Scan(&n.ID, &n.Title, &n.Content, &timeStr, &n.AuthorID)
 		if err != nil {
 			log.Panicln(err.Error())
 		}
@@ -129,7 +129,7 @@ func LinkTag(nID, tID int64) {
 	}
 	defer linkTag.Close()
 
-	_, err := linkTag.Exec(nID, tID)
+	_, err = linkTag.Exec(nID, tID)
 	if err != nil {
 		log.Panicln(err.Error())
 	}

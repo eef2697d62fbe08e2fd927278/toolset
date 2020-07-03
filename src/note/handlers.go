@@ -29,9 +29,9 @@ func HandleByID(res http.ResponseWriter, req *http.Request) {
 		params := mux.Vars(req)
 		id, err := strconv.Atoi(params["id"])
 		if err != nil {
-			log.Panicln(err.Error)
+			log.Panicln(err.Error())
 		}
-		note := GetById(int64(id))
+		note := GetByID(int64(id))
 
 		if note.ID == -1 {
 			//note not found

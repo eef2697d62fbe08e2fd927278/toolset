@@ -19,7 +19,7 @@ func main() {
 
 	// test api handlers
 	router.HandleFunc("/api/user", user.CreateUser).Headers("Accept", "application/json")
-	router.HandleFunc("/api/note/{id}", note.HandleById)
+	router.HandleFunc("/api/note/{id}", note.HandleByID)
 
 	//test convert
 	t := time.Now()
