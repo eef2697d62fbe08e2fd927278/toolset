@@ -26,10 +26,11 @@ func main() {
 
 	//test convert
 	t := time.Now()
-	var s string = "this should be time"
+	var s string = "-06-28 12:20:59"
 
+	fmt.Println(t, s)
 	database.ConvertTime(&t, &s)
-	fmt.Println(s)
+	fmt.Println(t, s)
 
 	port := ":8000"
 

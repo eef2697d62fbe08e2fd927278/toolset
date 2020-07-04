@@ -73,7 +73,40 @@ func DeleteConnect() sql.DB {
 // format used is "YYYY-MM-DD hh:mm:ss"
 func ConvertTime(t *time.Time, s *string) {
 
-	if len(*s) <= 0 {
+	if t.IsZero() {
+		var tm time.Time
+
+		var st = *s
+
+		year, err := strconv.Atoi(st[0:4])
+		if err != nil {
+			log.Panicln(err.Error())
+		}
+		month, err := strconv.Atoi(st[5:7])
+		if err != nil {
+			log.Panicln(err.Error())
+		}
+		day, err := strconv.Atoi(st[8:10])
+		if err != nil {
+			log.Panicln(err.Error())
+		}
+
+		hour, err := strconv.Atoi(st[11:13])
+		if err != nil {
+			log.Panicln(err.Error())
+		}
+		minute, err := strconv.Atoi(st[14:16])
+		if err != nil {
+			log.Panicln(err.Error())
+		}
+		second, err := strconv.Atoi(st[17:19])
+		if err != nil {
+			log.Panicln(err.Error())
+		}
+
+		tm = time.Date(year, time.Month(month), day, hour, minute, second, 0, time.UTC)
+		*t = tm
+	} else if len(*s) <= 0 {
 		var tm string
 
 		// setting date
@@ -101,41 +134,6 @@ func ConvertTime(t *time.Time, s *string) {
 		}
 		tm += string(t.Second())
 
-		log.Printf("time from time to string: %s\n", *s)
 		*s = tm
-	} else if t.IsZero() {
-		var tm time.Time
-
-		var st = *s
-
-		year, err := strconv.Atoi(st[0:3])
-		if err != nil {
-			log.Panicln(err.Error())
-		}
-		month, err := strconv.Atoi(st[5:6])
-		if err != nil {
-			log.Panicln(err.Error())
-		}
-		day, err := strconv.Atoi(st[8:9])
-		if err != nil {
-			log.Panicln(err.Error())
-		}
-
-		hour, err := strconv.Atoi(st[11:12])
-		if err != nil {
-			log.Panicln(err.Error())
-		}
-		minute, err := strconv.Atoi(st[14:15])
-		if err != nil {
-			log.Panicln(err.Error())
-		}
-		second, err := strconv.Atoi(st[17:18])
-		if err != nil {
-			log.Panicln(err.Error())
-		}
-
-		tm = time.Date(year, time.Month(month), day, hour, minute, second, 0, time.UTC)
-		log.Printf("time from string to time: %v\n", tm)
-		*t = tm
 	}
 }
