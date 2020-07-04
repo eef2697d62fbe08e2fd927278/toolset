@@ -15,15 +15,18 @@ import (
 func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/", HomeHandler)
-	router.HandleFunc("/note", note.Handler)
 
-	// test api handlers
+	// user handlers
 	router.HandleFunc("/api/user", user.HandleCreate)
+	router.HandleFunc("/api/user/{id}", user.HandleByID)
+
+	//note handlers
 	router.HandleFunc("/api/note/{id}", note.HandleByID)
+	router.HandleFunc("/note", note.Handler)
 
 	//test convert
 	t := time.Now()
-	var s string
+	var s string = "this should be time"
 
 	database.ConvertTime(&t, &s)
 	fmt.Println(s)

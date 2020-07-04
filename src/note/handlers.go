@@ -21,7 +21,6 @@ func Handler(res http.ResponseWriter, req *http.Request) {
 
 // HandleByID : handles the requests to notes with a certain id
 func HandleByID(res http.ResponseWriter, req *http.Request) {
-
 	if req.Method == http.MethodGet {
 		// requesting a note
 		res.Header().Set("Content-Type", "application/json")

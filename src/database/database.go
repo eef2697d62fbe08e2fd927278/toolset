@@ -9,6 +9,19 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+// Response : a struct for json responses
+type Response struct {
+	Message string `json:"message"`
+}
+
+// NewResponse : returns a struct with a message you set as parameter
+func NewResponse(m string) Response {
+	var r Response
+	r.Message = m
+
+	return r
+}
+
 // TODO: maybe remove these functions, becuase really it just adds another layer of complexity
 
 // InsertConnect : connect to the mysql server with insert privileges
@@ -60,7 +73,37 @@ func DeleteConnect() sql.DB {
 // format used is "YYYY-MM-DD hh:mm:ss"
 func ConvertTime(t *time.Time, s *string) {
 
-	if t.IsZero() {
+	if len(*s) <= 0 {
+		var tm string
+
+		// setting date
+		tm = string(t.Year()) + "-"
+		if int(t.Month()) <= 9 {
+			tm += "0"
+		}
+		tm += string(int(t.Month())) + "-"
+		if int(t.Day()) <= 9 {
+			tm += "0"
+		}
+		tm += string(t.Day()) + " "
+
+		//setting time
+		if int(t.Hour()) <= 9 {
+			tm += "0"
+		}
+		tm += string(t.Hour()) + ":"
+		if int(t.Minute()) <= 9 {
+			tm += "0"
+		}
+		tm += string(t.Minute()) + ":"
+		if int(t.Second()) <= 9 {
+			tm += "0"
+		}
+		tm += string(t.Second())
+
+		log.Printf("time from time to string: %s\n", *s)
+		*s = tm
+	} else if t.IsZero() {
 		var tm time.Time
 
 		var st = *s
@@ -92,36 +135,7 @@ func ConvertTime(t *time.Time, s *string) {
 		}
 
 		tm = time.Date(year, time.Month(month), day, hour, minute, second, 0, time.UTC)
-		t = &tm
-
-	} else if len(*s) <= 0 {
-		var tm string
-
-		// setting date
-		tm = string(t.Year()) + "-"
-		if int(t.Month()) <= 9 {
-			tm += "0"
-		}
-		tm += string(int(t.Month())) + "-"
-		if int(t.Day()) <= 9 {
-			tm += "0"
-		}
-		tm += string(t.Day()) + " "
-
-		//setting time
-		if int(t.Hour()) <= 9 {
-			tm += "0"
-		}
-		tm += string(t.Hour()) + ":"
-		if int(t.Minute()) <= 9 {
-			tm += "0"
-		}
-		tm += string(t.Minute()) + ":"
-		if int(t.Second()) <= 9 {
-			tm += "0"
-		}
-		tm += string(t.Second())
-
-		s = &tm
+		log.Printf("time from string to time: %v\n", tm)
+		*t = tm
 	}
 }
