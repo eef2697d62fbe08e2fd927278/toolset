@@ -57,9 +57,8 @@ func GetByID(id int64) Tag {
 		}
 	}
 
-	err = tagRows.Err()
-	if err != nil {
-		log.Panicln(err.Error())
+	if tagRows.Err() != nil {
+		log.Panicln(tagRows.Err())
 	}
 
 	return t
@@ -88,9 +87,8 @@ func GetByName(name string) Tag {
 		}
 	}
 
-	err = tagRows.Err()
-	if err != nil {
-		log.Panicln(err.Error())
+	if tagRows.Err() != nil {
+		log.Panicln(tagRows.Err())
 	}
 
 	return t

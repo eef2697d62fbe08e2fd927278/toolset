@@ -47,24 +47,23 @@ func GetByID(id int64) User {
 	}
 	defer db.Close()
 
-	tagRows, err := db.Query("SELECT id, email, username, creationDate FROM tbl_user WHERE id = ?", id)
+	userRows, err := db.Query("SELECT id, email, username, creationDate FROM tbl_user WHERE id = ?", id)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
-	defer tagRows.Close()
+	defer userRows.Close()
 
 	var u User
 	var timeStr string
-	for tagRows.Next() {
-		err := tagRows.Scan(&u.ID, &u.Email, &u.Username, &timeStr)
+	for userRows.Next() {
+		err := userRows.Scan(&u.ID, &u.Email, &u.Username, &timeStr)
 		if err != nil {
 			log.Panicln(err.Error())
 		}
 	}
 
-	err = tagRows.Err()
-	if err != nil {
-		log.Panicln(err.Error())
+	if userRows.Err() != nil {
+		log.Panicln(userRows.Err())
 	}
 
 	if u.ID == 0 && u.Email == "" && u.Username == "" {
@@ -77,31 +76,30 @@ func GetByID(id int64) User {
 }
 
 // GetByEmail : returns the selected user from the database as an object
-func GetByEmail(e int64) User {
+func GetByEmail(e string) User {
 	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
 	if err != nil {
 		log.Panicln(err.Error())
 	}
 	defer db.Close()
 
-	tagRows, err := db.Query("SELECT id, email, username, creationDate FROM tbl_user WHERE email = ?", e)
+	userRows, err := db.Query("SELECT id, email, username, creationDate FROM tbl_user WHERE email = ?", e)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
-	defer tagRows.Close()
+	defer userRows.Close()
 
 	var u User
 	var timeStr string
-	for tagRows.Next() {
-		err := tagRows.Scan(&u.ID, &u.Email, &u.Username, &timeStr)
+	for userRows.Next() {
+		err := userRows.Scan(&u.ID, &u.Email, &u.Username, &timeStr)
 		if err != nil {
 			log.Panicln(err.Error())
 		}
 	}
 
-	err = tagRows.Err()
-	if err != nil {
-		log.Panicln(err.Error())
+	if userRows.Err() != nil {
+		log.Panicln(userRows.Err())
 	}
 
 	if u.ID == 0 && u.Email == "" && u.Username == "" {
@@ -114,31 +112,30 @@ func GetByEmail(e int64) User {
 }
 
 // GetByUsername : returns the selected user from the database as an object
-func GetByUsername(n int64) User {
+func GetByUsername(n string) User {
 	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
 	if err != nil {
 		log.Panicln(err.Error())
 	}
 	defer db.Close()
 
-	tagRows, err := db.Query("SELECT id, email, username, creationDate FROM tbl_user WHERE email = ?", n)
+	userRows, err := db.Query("SELECT id, email, username, creationDate FROM tbl_user WHERE email = ?", n)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
-	defer tagRows.Close()
+	defer userRows.Close()
 
 	var u User
 	var timeStr string
-	for tagRows.Next() {
-		err := tagRows.Scan(&u.ID, &u.Email, &u.Username, &timeStr)
+	for userRows.Next() {
+		err := userRows.Scan(&u.ID, &u.Email, &u.Username, &timeStr)
 		if err != nil {
 			log.Panicln(err.Error())
 		}
 	}
 
-	err = tagRows.Err()
-	if err != nil {
-		log.Panicln(err.Error())
+	if userRows.Err() != nil {
+		log.Panicln(userRows.Err())
 	}
 
 	if u.ID == 0 && u.Email == "" && u.Username == "" {

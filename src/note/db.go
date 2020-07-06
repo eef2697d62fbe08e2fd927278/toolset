@@ -64,24 +64,23 @@ func GetByID(id int64) Note {
 	}
 	defer db.Close()
 
-	tagRows, err := db.Query("SELECT id, title, content, creationDate, author FROM tbl_note WHERE id = ?", id)
+	noteRows, err := db.Query("SELECT id, title, content, creationDate, author FROM tbl_note WHERE id = ?", id)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
-	defer tagRows.Close()
+	defer noteRows.Close()
 
 	var n Note
 	var timeStr string
-	for tagRows.Next() {
-		err := tagRows.Scan(&n.ID, &n.Title, &n.Content, &timeStr, &n.AuthorID)
+	for noteRows.Next() {
+		err := noteRows.Scan(&n.ID, &n.Title, &n.Content, &timeStr, &n.AuthorID)
 		if err != nil {
 			log.Panicln(err.Error())
 		}
 	}
 
-	err = tagRows.Err()
-	if err != nil {
-		log.Panicln(err.Error())
+	if noteRows.Err() != nil {
+		log.Panicln(noteRows.Err())
 	}
 
 	if n.ID == 0 && n.Content == "" {
