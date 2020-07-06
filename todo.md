@@ -8,3 +8,4 @@
 - [x] remove the mysql connect funcs in `database.go`
 - [x] add creation date to tag and user and rename it in note table
 - [ ] check if things unique in database already exist (like username, email, etc.)
+- [ ] format log messages for example `log.Println("ERROR: %s", err)`

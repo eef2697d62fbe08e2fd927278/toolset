@@ -3,6 +3,7 @@ package database
 import (
 	//"database/sql"
 	"log"
+	"regexp"
 	"strconv"
 	"time"
 	// _ "github.com/go-sql-driver/mysql"
@@ -33,6 +34,16 @@ func ConvertTime(t *time.Time, s *string) {
 		var tm time.Time
 
 		var st = *s
+
+		r, err := regexp.Compile("\\d{4}-\\d{2}-\\d{2}\\s{1}\\d{2}:\\d{2}:\\d{2}")
+		if err != nil {
+			log.Panicln(err.Error())
+		}
+
+		if !r.Match([]byte(st)) {
+			log.Println("String did not match Regex")
+			return
+		}
 
 		year, err := strconv.Atoi(st[0:4])
 		if err != nil {

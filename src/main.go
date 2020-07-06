@@ -4,10 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/youngtrashbag/toolset/src/database"
 	"github.com/youngtrashbag/toolset/src/note"
 	"github.com/youngtrashbag/toolset/src/user"
 )
@@ -23,14 +21,6 @@ func main() {
 	//note handlers
 	router.HandleFunc("/api/note/{id}", note.HandleByID)
 	router.HandleFunc("/note", note.Handler)
-
-	//test convert
-	t := time.Now()
-	var s string = "-06-28 12:20:59"
-
-	fmt.Println(t, s)
-	database.ConvertTime(&t, &s)
-	fmt.Println(t, s)
 
 	port := ":8000"
 
