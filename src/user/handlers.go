@@ -19,16 +19,22 @@ func HandleCreate(res http.ResponseWriter, req *http.Request) {
 				id := u.Insert()
 
 				if id != -1 {
-					log.Printf("Inserted User with ID %d into Database", id)
+					message := "Inserted User with ID " + string(id) + " into Database\n"
+					log.Println(message)
+					json.NewEncoder(res).Encode(database.NewResponse(message))
 
 					res.WriteHeader(201)
+				} else {
+					message := "Could not Insert User into Database"
+					log.Panicln(message)
+					json.NewEncoder(res).Encode(database.NewResponse(message))
+					res.WriteHeader(400)
 				}
 			}
 		}
+	} else {
+		res.WriteHeader(405)
 	}
-
-	log.Panicln("Could not Insert User into Database")
-	res.WriteHeader(400)
 }
 
 // HandleByID : handles requests for users with a specified id
@@ -43,19 +49,19 @@ func HandleByID(res http.ResponseWriter, req *http.Request) {
 				if err != nil {
 					log.Panicln(err.Error())
 				}
+
 				u := GetByID(int64(id))
 
-				if u.ID == -1 {
+				if u.ID != -1 {
+					json.NewEncoder(res).Encode(u)
+					res.WriteHeader(201)
+				} else {
 					//user not in database
 					message := "User not found"
 					res.WriteHeader(404)
 					json.NewEncoder(res).Encode(database.NewResponse(message))
 					log.Printf(message)
-				} else {
-					json.NewEncoder(res).Encode(u)
-					res.WriteHeader(201)
 				}
-
 			} else if i == "text/*" {
 				// render html
 			}

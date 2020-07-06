@@ -24,7 +24,6 @@ func main() {
 
 	port := ":8000"
 
-	//http.Handle("/", router)
 	fmt.Println("Starting Server on Port: ", port)
 	defer fmt.Println("Server shut-down!")
 	log.Fatal(http.ListenAndServe(port, router))
