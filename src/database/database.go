@@ -24,52 +24,6 @@ func NewResponse(m string) Response {
 // TODO: this file is generally a mess, decide what to do with it and rename it,
 //			becuase without the db funcs there is nothing really making this about datbases
 
-// TODO: maybe remove these functions, becuase really it just adds another layer of complexity
-
-// InsertConnect : connect to the mysql server with insert privileges
-// note: defer closing the db object after assigning it
-//func InsertConnect() sql.DB {
-//	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
-//	if err != nil {
-//		log.Panicln(err.Error())
-//	}
-//
-//	return *db
-//}
-
-// SelectConnect : connect to mysql server with select privileges
-// note: defer closing the db object after assigning it
-//func SelectConnect() sql.DB {
-//	db, err := sql.Open("mysql", "toolset_select:password@/toolset_db")
-//	if err != nil {
-//		log.Panicln(err.Error())
-//	}
-//
-//	return *db
-//}
-
-// UpdateConnect : connect to mysql server with update privileges
-// note: defer closing the db object after assigning it
-//func UpdateConnect() sql.DB {
-//	db, err := sql.Open("mysql", "toolset_update:password@/toolset_db")
-//	if err != nil {
-//		log.Panicln(err.Error())
-//	}
-//
-//	return *db
-//}
-
-// DeleteConnect : connect to mysql server with delete privileges
-// note: defer closing the db object after assigning it
-//func DeleteConnect() sql.DB {
-//	db, err := sql.Open("mysql", "toolset_delete:password@/toolset_db")
-//	if err != nil {
-//		log.Panicln(err.Error())
-//	}
-//
-//	return *db
-//}
-
 // ConvertTime : convert the time from go to a string,
 // so it complies with mysql standard for DATETIME.
 // format used is "YYYY-MM-DD hh:mm:ss"
