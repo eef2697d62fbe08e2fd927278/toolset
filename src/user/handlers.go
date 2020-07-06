@@ -10,8 +10,8 @@ import (
 	"github.com/youngtrashbag/toolset/src/database"
 )
 
-// HandleCreate : handles the creation a user
-func HandleCreate(res http.ResponseWriter, req *http.Request) {
+// APIHandleCreate : handles the creation a user
+func APIHandleCreate(res http.ResponseWriter, req *http.Request) {
 	if req.Method == http.MethodPost {
 		for _, i := range req.Header["Content-Type"] {
 			if i == "application/json" {
@@ -23,22 +23,22 @@ func HandleCreate(res http.ResponseWriter, req *http.Request) {
 					log.Println(message)
 					json.NewEncoder(res).Encode(database.NewResponse(message))
 
-					res.WriteHeader(201)
+					res.WriteHeader(http.StatusCreated)
 				} else {
 					message := "Could not Insert User into Database"
 					log.Panicln(message)
 					json.NewEncoder(res).Encode(database.NewResponse(message))
-					res.WriteHeader(400)
+					res.WriteHeader(http.StatusBadRequest)
 				}
 			}
 		}
 	} else {
-		res.WriteHeader(405)
+		res.WriteHeader(http.StatusMethodNotAllowed)
 	}
 }
 
-// HandleByID : handles requests for users with a specified id
-func HandleByID(res http.ResponseWriter, req *http.Request) {
+// APIHandleByID : handles requests for users with a specified id
+func APIHandleByID(res http.ResponseWriter, req *http.Request) {
 	if req.Method == http.MethodGet {
 		for _, i := range req.Header["Accept"] {
 			if i == "application/json" {
@@ -54,19 +54,17 @@ func HandleByID(res http.ResponseWriter, req *http.Request) {
 
 				if u.ID != -1 {
 					json.NewEncoder(res).Encode(u)
-					res.WriteHeader(201)
+					res.WriteHeader(http.StatusOK)
 				} else {
 					//user not in database
 					message := "User not found"
-					res.WriteHeader(404)
+					res.WriteHeader(http.StatusNotFound)
 					json.NewEncoder(res).Encode(database.NewResponse(message))
 					log.Printf(message)
 				}
-			} else if i == "text/*" {
-				// render html
 			}
 		}
 	} else {
-		res.WriteHeader(400)
+		res.WriteHeader(http.StatusBadRequest)
 	}
 }

@@ -19,8 +19,9 @@ func Handler(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-// HandleByID : handles the requests to notes with a certain id
-func HandleByID(res http.ResponseWriter, req *http.Request) {
+// TODO: this function is flawed. use code from userhandler and implement it here
+// APIHandleByID : handles the requests to notes with a certain id
+func APIHandleByID(res http.ResponseWriter, req *http.Request) {
 	if req.Method == http.MethodGet {
 		// requesting a note
 		res.Header().Set("Content-Type", "application/json")
@@ -34,7 +35,7 @@ func HandleByID(res http.ResponseWriter, req *http.Request) {
 
 		if note.ID == -1 {
 			//note not found
-			res.WriteHeader(404)
+			res.WriteHeader(http.StatusNotFound)
 		}
 
 		json.NewEncoder(res).Encode(note)
