@@ -1,4 +1,16 @@
-# General Documentation
+# Toolset
+
+**toolset** *Pronunciation /ˈto͞olset/ /ˈtulsɛt/*
+This Project is originates from the absence of quick and easy to use tools. For example, it is very hard to use tools on your phone without being distracted by other things.  
+
+That is why we present to you the almighty **toolset**. With its easy to use design, and its clean code, you can do many great things such as
+
+- take notes
+- tag your notes
+- log into your account
+- register a new account
+
+NOTE: this is still a work in progress (WIP)
 
 ## Tools
 
