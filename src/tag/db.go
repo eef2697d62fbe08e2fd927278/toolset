@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"log"
 	"strings"
+
+	_ "github.com/go-sql-driver/mysql" // this is needed for mysql
 )
 
 // Insert : saves tag to db and returns id of entry
