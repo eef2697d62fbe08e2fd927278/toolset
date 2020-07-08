@@ -16,9 +16,9 @@ NOTE: this is still a work in progress (WIP)
 
 Besides using some of the Go Standard Packages, we also use Tools such as
 
-- MySQL
-- [Mux](github.com/gorilla/mux)
-- [go-mysql-driver](github.com/go-sql-driver/mysql)
+- [MySQL](https://www.mysql.com)
+- [Mux](https://github.com/gorilla/mux)
+- [go-mysql-driver](https://github.com/go-sql-driver/mysql)
 
 ## Go / Files
 
