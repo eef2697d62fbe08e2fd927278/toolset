@@ -16,8 +16,10 @@ func main() {
 	// user frontend handlers
 	//router.HandleFunc("/user", user.Handler)
 
-	// frontend note handlers
+	// note frontend handlers
 	router.HandleFunc("/note", note.Handler)
+
+	// tag frontend handlers
 
 	apiRouter := router.PathPrefix("/api").Subrouter()
 
@@ -29,9 +31,13 @@ func main() {
 	//apiRouter.HandleFunc("/note", note.APIHandleCreate)
 	apiRouter.HandleFunc("/note/{id}", note.APIHandleByID)
 
+	// tag api handlers
+	//apiRouter.HandleFunc("/tag", tag.APIHandleCreate)
+	//apiRouter.HandleFunc("/tag/{id}", tag.APIHandleByID)
+
 	port := ":8000"
 
-	log.Printf("Starting Server on Port \"%s\"", port)
+	log.Printf("Starting Server on Port \"%s\"\n", port)
 	defer log.Println("Server shut-down!")
 	log.Fatal(http.ListenAndServe(port, router))
 }
@@ -57,7 +63,7 @@ func Handler(res http.ResponseWriter, req *http.Request) {
 		statusCode = 404
 	}
 
-	log.Printf("%s Method on \"%s\", StatusCode:%d, Message:\"%s\"", req.Method, req.URL.Path, statusCode, message)
+	log.Printf("%s Method on \"%s\", StatusCode:%d, Message:\"%s\"\n", req.Method, req.URL.Path, statusCode, message)
 
 	res.WriteHeader(statusCode)
 	res.Write([]byte(message))
