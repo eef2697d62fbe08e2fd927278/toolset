@@ -67,6 +67,7 @@ func GetByID(id int64) User {
 		log.Panicln(userRows.Err())
 	}
 
+	log.Printf("id: %s usrname: %s\n",string(u.ID), u.Username)
 	if u.ID == 0 && u.Email == "" && u.Username == "" {
 		// when there is no entry found, return id = -1
 		u.ID = -1

@@ -3,22 +3,19 @@ package user
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/gorilla/mux"
+	"github.com/youngtrashbag/toolset/src/database"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
-	"time"
-
-	"github.com/gorilla/mux"
-	"github.com/youngtrashbag/toolset/src/database"
 )
 
 type jUser struct {
 	ID           int64 `json:"id"`
 	Username     string `json:"username"`
 	Email        string `json:"email"`
-	password     string
-	CreationDate time.Time `json:"creation_date"`
+	CreationDate string `json:"creation_date"`
 }
 
 // APIHandleCreate : handles the creation a user
@@ -82,7 +79,17 @@ func APIHandleByID(res http.ResponseWriter, req *http.Request) {
 				u := GetByID(int64(id))
 
 				if u.ID != -1 {
-					json.NewEncoder(res).Encode(u)
+
+					var t string
+					database.ConvertTime(&u.CreationDate, &t)
+					j := jUser{
+						ID:           u.ID,
+						Username:     u.Username,
+						Email:        u.Email,
+						CreationDate: t,
+					}
+
+					json.NewEncoder(res).Encode(j)
 					res.WriteHeader(http.StatusOK)
 				} else {
 					//user not in database

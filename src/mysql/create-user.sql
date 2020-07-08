@@ -14,8 +14,8 @@ GRANT insert ON toolset.* TO 'toolset_insert'@'localhost';
 
 -- only delete
 CREATE USER 'toolset_delete'@'localhost' IDENTIFIED BY 'password';
-GRANT permission ON toolset.* TO 'toolset_delete'@'localhost';
+GRANT delete ON toolset.* TO 'toolset_delete'@'localhost';
 
 -- only update
 CREATE USER 'toolset_update'@'localhost' IDENTIFIED BY 'password';
-GRANT permission ON toolset.* TO 'toolset_update'@'localhost';
+GRANT update ON toolset.* TO 'toolset_update'@'localhost';
