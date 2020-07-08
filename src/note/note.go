@@ -16,14 +16,13 @@ type Note struct {
 }
 
 // NewNote : a constructor for the Note struct
-func NewNote(t string, c string) Note {
+func NewNote(t string, c string, a int64) Note {
 	var n Note
 
 	n.Title = t
 	n.Content = c
+	n.AuthorID = a
 	n.CreationDate = time.Now()
-
-	// TODO: set authorId
 
 	return n
 }
