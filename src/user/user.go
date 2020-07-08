@@ -3,6 +3,7 @@ package user
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"strings"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql" // this is needed for mysql
@@ -10,7 +11,7 @@ import (
 
 // User : a struct, so new users can be added to the site
 type User struct {
-	ID           int64
+	ID           int64 `json:"id"`
 	Username     string `json:"username"`
 	Email        string `json:"email"`
 	password     string
@@ -22,8 +23,8 @@ type User struct {
 func NewUser(e string, un string, p string) User {
 	var u User
 
-	u.Email = e
-	u.Username = un
+	u.Email = strings.ToLower(e)
+	u.Username = strings.ToLower(un)
 	u.password = hashPassword(p)
 	u.CreationDate = time.Now()
 
