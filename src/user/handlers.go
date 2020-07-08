@@ -3,16 +3,18 @@ package user
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/gorilla/mux"
-	"github.com/youngtrashbag/toolset/src/database"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/gorilla/mux"
+	"github.com/youngtrashbag/toolset/src/database"
 )
 
 type jUser struct {
-	ID           int64 `json:"id"`
+	ID           int64  `json:"id"`
 	Username     string `json:"username"`
 	Email        string `json:"email"`
 	CreationDate string `json:"creation_date"`
@@ -100,6 +102,52 @@ func APIHandleByID(res http.ResponseWriter, req *http.Request) {
 				}
 			} else {
 				res.WriteHeader(http.StatusBadRequest)
+			}
+		}
+	}
+}
+
+/*
+	frontend handlers
+*/
+
+// HandleByID : handles frontend requests
+func HandleByID(res http.ResponseWriter, req *http.Request) {
+	for _, i := range req.Header["Accept"] {
+		if i == "text/*" {
+			if req.Method == http.MethodGet {
+
+				res.Header().Set("Content-Type", "text/html")
+
+				params := mux.Vars(req)
+				id, err := strconv.Atoi(params["id"])
+				if err != nil {
+					log.Panicln(err.Error())
+				}
+
+				user := GetByID(int64(id))
+
+				if user.ID != -1 {
+					hTmpl, err := ioutil.ReadFile("templates/head.html")
+					if err != nil {
+						log.Panicln(err.Error())
+					}
+					uTmpl, err := ioutil.ReadFile("./templates/user.html")
+					if err != nil {
+						log.Panicln(err.Error())
+					}
+
+					tmpl, err := template.New("user").Parse(string(append(hTmpl[:], uTmpl[:]...)))
+					if err != nil {
+						log.Panicln(err.Error())
+					}
+
+					tmpl.Execute(res, user)
+				} else {
+					// user not found in database
+					// error 404
+				}
+
 			}
 		}
 	}
