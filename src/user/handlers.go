@@ -34,11 +34,18 @@ func APIHandleCreate(res http.ResponseWriter, req *http.Request) {
 				r := bytes.NewReader(b)
 				jDecoder := json.NewDecoder(r)
 
-				var u User
-				err = jDecoder.Decode(&u)
+				var usr struct {
+					email    string // `json:"email"`
+					username string // `json:"username"`
+					password string // `json:"password"`
+				}
+
+				err = jDecoder.Decode(&usr)
 				if err != nil {
 					log.Panicln(err.Error())
 				}
+
+				u := NewUser(usr.email, usr.username, usr.password)
 
 				id := u.Insert()
 
@@ -145,7 +152,8 @@ func HandleByID(res http.ResponseWriter, req *http.Request) {
 					tmpl.Execute(res, user)
 				} else {
 					// user not found in database
-					// error 404
+					res.Write([]byte("User Not Found"))
+					res.WriteHeader(http.StatusNotFound)
 				}
 
 			}
