@@ -13,8 +13,6 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/", Handler)
 
-	router.HandleFunc("/static", http.StripPrefix("/static", http.FileServer(http.Dir("./ui/static/"))).ServeHTTP)
-
 	// user frontend handlers
 	//router.HandleFunc("/user", user.Handler)
 	router.HandleFunc("/user/{id}", user.HandleByID)

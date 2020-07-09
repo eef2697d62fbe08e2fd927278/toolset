@@ -132,7 +132,7 @@ func HandleByID(res http.ResponseWriter, req *http.Request) {
 					if err != nil {
 						log.Panicln(err.Error())
 					}
-					uTmpl, err := ioutil.ReadFile("./templates/user.html")
+					uTmpl, err := ioutil.ReadFile("templates/user.html")
 					if err != nil {
 						log.Panicln(err.Error())
 					}
