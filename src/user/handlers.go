@@ -3,7 +3,6 @@ package user
 import (
 	"bytes"
 	"encoding/json"
-	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -135,21 +134,8 @@ func HandleByID(res http.ResponseWriter, req *http.Request) {
 				user := GetByID(int64(id))
 
 				if user.ID != -1 {
-					hTmpl, err := ioutil.ReadFile("templates/head.html")
-					if err != nil {
-						log.Panicln(err.Error())
-					}
-					uTmpl, err := ioutil.ReadFile("templates/user.html")
-					if err != nil {
-						log.Panicln(err.Error())
-					}
-
-					tmpl, err := template.New("user").Parse(string(append(hTmpl[:], uTmpl[:]...)))
-					if err != nil {
-						log.Panicln(err.Error())
-					}
-
-					tmpl.Execute(res, user)
+					log.Print("user found")
+					res.Write(user.RenderPage())
 				} else {
 					// user not found in database
 					res.Write([]byte("User Not Found"))
