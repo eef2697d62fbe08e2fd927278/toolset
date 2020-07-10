@@ -6,8 +6,8 @@ import (
 
 	_ "github.com/go-sql-driver/mysql" // this is needed for mysql
 
-	"github.com/youngtrashbag/toolset/src/database"
 	"github.com/youngtrashbag/toolset/src/tag"
+	"github.com/youngtrashbag/toolset/src/utils"
 )
 
 // Insert : saves a user in the database and returns the id of said db entry
@@ -28,7 +28,7 @@ func (n *Note) Insert() int64 {
 	defer insertNote.Close()
 
 	var time string
-	database.ConvertTime(&n.CreationDate, &time)
+	utils.ConvertTime(&n.CreationDate, &time)
 	// execute sql insert note statement
 	result, err := insertNote.Exec(n.Title, n.Content, time)
 	if err != nil {
@@ -90,6 +90,6 @@ func GetByID(id int64) Note {
 		n.ID = -1
 	}
 
-	database.ConvertTime(&n.CreationDate, &timeStr)
+	utils.ConvertTime(&n.CreationDate, &timeStr)
 	return n
 }

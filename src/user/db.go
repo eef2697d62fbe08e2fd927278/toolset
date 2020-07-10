@@ -5,7 +5,7 @@ import (
 	"log"
 
 	_ "github.com/go-sql-driver/mysql" // this is needed for mysql
-	"github.com/youngtrashbag/toolset/src/database"
+	"github.com/youngtrashbag/toolset/src/utils"
 )
 
 // Insert : saves a user in the database
@@ -25,7 +25,7 @@ func (u *User) Insert() int64 {
 	defer insertUser.Close()
 
 	var time string
-	database.ConvertTime(&u.CreationDate, &time)
+	utils.ConvertTime(&u.CreationDate, &time)
 	// execute sql statement
 	result, err := insertUser.Exec(u.Email, u.Username, u.password, time)
 	if err != nil {
@@ -40,7 +40,7 @@ func (u *User) Insert() int64 {
 	return userID
 }
 
-// GetByID : returns the selected user from the database as an object
+// GetByID : returns the selected user from the utils as an object
 func GetByID(id int64) User {
 	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
 	if err != nil {
@@ -72,7 +72,7 @@ func GetByID(id int64) User {
 		u.ID = -1
 	}
 
-	database.ConvertTime(&u.CreationDate, &timeStr)
+	utils.ConvertTime(&u.CreationDate, &timeStr)
 	return u
 }
 
@@ -108,7 +108,7 @@ func GetByEmail(e string) User {
 		u.ID = -1
 	}
 
-	database.ConvertTime(&u.CreationDate, &timeStr)
+	utils.ConvertTime(&u.CreationDate, &timeStr)
 	return u
 }
 
@@ -144,6 +144,6 @@ func GetByUsername(n string) User {
 		u.ID = -1
 	}
 
-	database.ConvertTime(&u.CreationDate, &timeStr)
+	utils.ConvertTime(&u.CreationDate, &timeStr)
 	return u
 }

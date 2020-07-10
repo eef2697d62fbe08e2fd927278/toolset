@@ -9,7 +9,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/youngtrashbag/toolset/src/database"
+	"github.com/youngtrashbag/toolset/src/utils"
 )
 
 type jUser struct {
@@ -50,15 +50,15 @@ func APIHandleCreate(res http.ResponseWriter, req *http.Request) {
 
 				if id != -1 {
 					// if id == -1 then the user could not be created
-					message := "Inserted User with ID " + string(id) + " into Database\n"
+					message := "Inserted User with ID " + string(id) + " into database\n"
 					log.Println(message)
-					json.NewEncoder(res).Encode(database.NewResponse(message))
+					json.NewEncoder(res).Encode(utils.NewResponse(message))
 
 					res.WriteHeader(http.StatusCreated)
 				} else {
 					message := "Could not Insert User into Database"
 					log.Panicln(message)
-					json.NewEncoder(res).Encode(database.NewResponse(message))
+					json.NewEncoder(res).Encode(utils.NewResponse(message))
 					res.WriteHeader(http.StatusBadRequest)
 				}
 			} else {
@@ -89,7 +89,7 @@ func APIHandleByID(res http.ResponseWriter, req *http.Request) {
 				if u.ID != -1 {
 
 					var t string
-					database.ConvertTime(&u.CreationDate, &t)
+					utils.ConvertTime(&u.CreationDate, &t)
 					j := jUser{
 						ID:           u.ID,
 						Username:     u.Username,
@@ -103,7 +103,7 @@ func APIHandleByID(res http.ResponseWriter, req *http.Request) {
 					//user not in database
 					message := "User not found"
 					res.WriteHeader(http.StatusNotFound)
-					json.NewEncoder(res).Encode(database.NewResponse(message))
+					json.NewEncoder(res).Encode(utils.NewResponse(message))
 					log.Printf(message)
 				}
 			} else {
