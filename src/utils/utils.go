@@ -3,6 +3,8 @@ package utils
 import (
 	//"database/sql"
 	"log"
+	"net/http"
+	"regexp"
 	"strconv"
 	"time"
 	// _ "github.com/go-sql-driver/mysql"
@@ -21,9 +23,6 @@ func NewResponse(m string) Response {
 	return r
 }
 
-// TODO: this file is generally a mess, decide what to do with it and rename it,
-//			becuase without the db funcs there is nothing really making this about datbases
-
 // ConvertTime : convert the time from go to a string,
 // so it complies with mysql standard for DATETIME.
 // format used is "YYYY-MM-DD hh:mm:ss"
@@ -34,15 +33,15 @@ func ConvertTime(t *time.Time, s *string) {
 
 		var st = *s
 
-		//r, err := regexp.Compile("\\d{4}-\\d{2}-\\d{2}\\s{1}\\d{2}:\\d{2}:\\d{2}")
-		//if err != nil {
-		//	log.Panicln(err.Error())
-		//}
+		r, err := regexp.Compile("\\d{4}-\\d{2}-\\d{2}\\s{1}\\d{2}:\\d{2}:\\d{2}")
+		if err != nil {
+			log.Panicln(err.Error())
+		}
 
-		//if !r.Match([]byte(st)) {
-		//	log.Println("String did not match Regex")
-		//	return
-		//}
+		if !r.Match([]byte(st)) {
+			log.Println("String did not match Regex")
+			return
+		}
 
 		year, err := strconv.Atoi(st[0:4])
 		if err != nil {
@@ -71,7 +70,7 @@ func ConvertTime(t *time.Time, s *string) {
 		}
 
 		tm = time.Date(year, time.Month(month), day, hour, minute, second, 0, time.UTC)
-		*t = tm
+		t = &tm
 	} else if len(*s) <= 0 {
 		var tm string
 
@@ -101,6 +100,14 @@ func ConvertTime(t *time.Time, s *string) {
 		}
 		tm += string(t.Second())
 
-		*s = tm
+		s = &tm
 	}
+}
+
+// TODO: find out how to get the response code from a http response
+
+// LogRequest : this func is used to uniformely log the response of a http request
+//		Note: this is not an http handler !
+func LogRequest(res http.ResponseWriter, req *http.Request) {
+	log.Printf("Method:\"%s\" on Route:\"%s\"\n\tResponse Code:\"%d\"", req.Method, req.URL.Path, res.WriteHeader)
 }
