@@ -4,8 +4,6 @@ import (
 	//"database/sql"
 	"log"
 	"net/http"
-	"regexp"
-	"strconv"
 	"time"
 	// _ "github.com/go-sql-driver/mysql"
 )
@@ -33,74 +31,20 @@ func ConvertTime(t *time.Time, s *string) {
 
 		var st = *s
 
-		r, err := regexp.Compile("\\d{4}-\\d{2}-\\d{2}\\s{1}\\d{2}:\\d{2}:\\d{2}")
+		tm, err := time.Parse("2006-01-02 15:04:05", st)
 		if err != nil {
 			log.Panicln(err.Error())
 		}
 
-		if !r.Match([]byte(st)) {
-			log.Println("String did not match Regex")
-			return
-		}
-
-		year, err := strconv.Atoi(st[0:4])
-		if err != nil {
-			log.Panicln(err.Error())
-		}
-		month, err := strconv.Atoi(st[5:7])
-		if err != nil {
-			log.Panicln(err.Error())
-		}
-		day, err := strconv.Atoi(st[8:10])
-		if err != nil {
-			log.Panicln(err.Error())
-		}
-
-		hour, err := strconv.Atoi(st[11:13])
-		if err != nil {
-			log.Panicln(err.Error())
-		}
-		minute, err := strconv.Atoi(st[14:16])
-		if err != nil {
-			log.Panicln(err.Error())
-		}
-		second, err := strconv.Atoi(st[17:19])
-		if err != nil {
-			log.Panicln(err.Error())
-		}
-
-		tm = time.Date(year, time.Month(month), day, hour, minute, second, 0, time.UTC)
-		t = &tm
+		*t = tm
 	} else if len(*s) <= 0 {
 		var tm string
 
-		// TODO: this does not work !
-		// setting date
-		tm = string(t.Year()) + "-"
-		if int(t.Month()) <= 9 {
-			tm += "0"
-		}
-		tm += string(int(t.Month())) + "-"
-		if int(t.Day()) <= 9 {
-			tm += "0"
-		}
-		tm += string(t.Day()) + " "
+		var tt = *t
 
-		//setting time
-		if int(t.Hour()) <= 9 {
-			tm += "0"
-		}
-		tm += string(t.Hour()) + ":"
-		if int(t.Minute()) <= 9 {
-			tm += "0"
-		}
-		tm += string(t.Minute()) + ":"
-		if int(t.Second()) <= 9 {
-			tm += "0"
-		}
-		tm += string(t.Second())
+		tm = tt.Format("2006-01-02 15:04:05")
 
-		s = &tm
+		*s = tm
 	}
 }
 
