@@ -26,6 +26,7 @@ func (u *User) Insert() int64 {
 
 	var time string
 	utils.ConvertTime(&u.CreationDate, &time)
+
 	// execute sql statement
 	result, err := insertUser.Exec(u.Email, u.Username, u.password, time)
 	if err != nil {

@@ -51,7 +51,7 @@ func ConvertTime(t *time.Time, s *string) {
 // TODO: find out how to get the response code from a http response
 
 // LogRequest : this func is used to uniformely log the response of a http request
-//		Note: this is not an http handler !
-func LogRequest(res http.ResponseWriter, req *http.Request) {
-	log.Printf("Method:\"%s\" on Route:\"%s\"\n\tResponse Code:\"%d\"", req.Method, req.URL.Path, res.WriteHeader)
+//		Note: this is not a http handler !
+func LogRequest(req *http.Request, method int) {
+	log.Printf("Method:\"%s\" on Route:\"%s\"\n\tResponse Code:\"%d\"", req.Method, req.URL.Path, method)
 }

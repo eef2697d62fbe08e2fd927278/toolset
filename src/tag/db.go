@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	_ "github.com/go-sql-driver/mysql" // this is needed for mysql
+	"github.com/youngtrashbag/toolset/src/utils"
 )
 
 // Insert : saves tag to db and returns id of entry
@@ -23,8 +24,11 @@ func (t *Tag) Insert() int64 {
 	}
 	defer insertNote.Close()
 
+	var time string
+	utils.ConvertTime(&t.CreationDate, &st)
+
 	// execute sql insert note statement
-	result, err := insertNote.Exec(t.Name, t.CreationDate)
+	result, err := insertNote.Exec(t.Name, st)
 	if err != nil {
 		log.Panicln(err.Error())
 	}

@@ -29,6 +29,7 @@ func (n *Note) Insert() int64 {
 
 	var time string
 	utils.ConvertTime(&n.CreationDate, &time)
+
 	// execute sql insert note statement
 	result, err := insertNote.Exec(n.Title, n.Content, time)
 	if err != nil {
