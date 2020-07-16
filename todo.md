@@ -14,6 +14,6 @@
 
 ## tasks
 
-1. fix the time conversion bug
+1. [x] fix the time conversion bug
 2. work on the rest api getting object by their ID in order user -> notes -> tags
 3. work on the rest api getting linked things (like user->all posts by user) in order notes -> tags

@@ -25,14 +25,14 @@ func NewUser(e string, un string, p string) User {
 
 	u.Email = strings.ToLower(e)
 	u.Username = strings.ToLower(un)
-	u.password = hashPassword(p)
+	u.password = hashToSha256(p)
 	u.CreationDate = time.Now()
 
 	return u
 }
 
-// hashPassword : sets the Password of the User and automatically hashes it
-func hashPassword(p string) string {
+// hashToSha256 : sets the Password of the User and automatically hashes it
+func hashToSha256(p string) string {
 	hashed := sha256.Sum256([]byte(p))
 	return hex.EncodeToString(hashed[:])
 }
