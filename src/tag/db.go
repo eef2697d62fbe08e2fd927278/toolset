@@ -25,10 +25,10 @@ func (t *Tag) Insert() int64 {
 	defer insertNote.Close()
 
 	var time string
-	utils.ConvertTime(&t.CreationDate, &st)
+	utils.ConvertTime(&t.CreationDate, &time)
 
 	// execute sql insert note statement
-	result, err := insertNote.Exec(t.Name, st)
+	result, err := insertNote.Exec(t.Name, time)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
