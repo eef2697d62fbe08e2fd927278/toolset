@@ -145,4 +145,6 @@ func HandleByID(res http.ResponseWriter, req *http.Request) {
 			}
 		}
 	}
+
+	utils.LogRequest(res, req)
 }
