@@ -1,9 +1,7 @@
 # Toolset
 
->>>
-NOTE:
-	this is still a work in progress (WIP)
->>>
+> NOTE:  
+>	this is still a work in progress (WIP)
 
 **toolset** *Pronunciation /ˈto͞olset/ /ˈtulsɛt/*  
 This Project is originates from the absence of quick and easy to use tools. For example, it is very hard to use tools on your phone without being distracted by other things.  
