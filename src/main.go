@@ -32,6 +32,7 @@ func main() {
 	/* note api handlers */
 	//apiRouter.HandleFunc("/note", note.APIHandleCreate)
 	apiRouter.HandleFunc("/note/id/{id}", note.Handle)
+	apiRouter.HandleFunc("/note/id/{id}/tags", note.HandleTags)
 
 	/* tag api handlers */
 	//apiRouter.HandleFunc("/tag", tag.APIHandleCreate)
