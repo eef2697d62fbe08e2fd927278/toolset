@@ -11,7 +11,7 @@ type Note struct {
 	ID           int64     `json:"id"`
 	Title        string    `json:"title"`
 	Content      string    `json:"content"`
-	CreationDate time.Time `json:"datetime"`
+	CreationDate time.Time `json:"creation_date"`
 	AuthorID     int64     `json:"author_id"`
 }
 

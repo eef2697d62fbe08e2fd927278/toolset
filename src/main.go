@@ -13,27 +13,27 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/", Handler)
 
-	// user frontend handlers
+	/* user frontend handlers */
 	//router.HandleFunc("/user", user.Handler)
 	//router.HandleFunc("/user/{id}", user.HandleByID)
 
-	// note frontend handlers
-	router.HandleFunc("/note", note.Handler)
+	/* note frontend handlers */
+	//router.HandleFunc("/note", note.Handler)
 
-	// tag frontend handlers
+	/* tag frontend handlers */
 
 	apiRouter := router.PathPrefix("/api").Subrouter()
 
-	// user api handlers
+	/* user api handlers */
 	apiRouter.HandleFunc("/user", user.APIHandleCreate)
-	apiRouter.HandleFunc("/user/id/{id}", user.APIHandleByID)
-	apiRouter.HandleFunc("/user/{username}", user.APIHandleByID)
+	apiRouter.HandleFunc("/user/id/{id}", user.Handle)
+	//apiRouter.HandleFunc("/user/{username}", user.Handle)	//TODO: do i want to add this, becuase it would disrupt api design
 
-	//note api handlers
+	/* note api handlers */
 	//apiRouter.HandleFunc("/note", note.APIHandleCreate)
-	apiRouter.HandleFunc("/note/{id}", note.APIHandleByID)
+	apiRouter.HandleFunc("/note/id/{id}", note.Handle)
 
-	// tag api handlers
+	/* tag api handlers */
 	//apiRouter.HandleFunc("/tag", tag.APIHandleCreate)
 	//apiRouter.HandleFunc("/tag/{id}", tag.APIHandleByID)
 

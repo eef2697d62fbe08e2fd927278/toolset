@@ -2,46 +2,67 @@ package note
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/youngtrashbag/toolset/src/utils"
 )
 
-// Handler : supposed to handle the /note resource
-func Handler(res http.ResponseWriter, req *http.Request) {
-	if req.Method == http.MethodGet {
-		fmt.Println("GetRequest")
-	} else if req.Method == http.MethodPost {
-		fmt.Println("PostRequest")
-	}
+type jNote struct {
+	ID           int64  `json:"id"`
+	Title        string `json:"title"`
+	Content      string `json:"content"`
+	CreationDate string `json:"creation_date"`
+	AuthorID     int64  `json:"author_id"`
 }
 
-// TODO: this function is flawed. use code from userhandler and implement it here
+// Handle : handles api requests for notes
+func Handle(res http.ResponseWriter, req *http.Request) {
+	for _, i := range req.Header["Accept"] {
+		if i == "application/json" {
+			if req.Method == http.MethodGet {
 
-// APIHandleByID : handles the requests to notes with a certain id
-func APIHandleByID(res http.ResponseWriter, req *http.Request) {
-	if req.Method == http.MethodGet {
-		// requesting a note
-		res.Header().Set("Content-Type", "application/json")
+				res.Header().Set("Content-Type", "application/json")
 
-		params := mux.Vars(req)
-		id, err := strconv.Atoi(params["id"])
-		if err != nil {
-			log.Panicln(err.Error())
+				params := mux.Vars(req)
+
+				id, err := strconv.Atoi(params["id"])
+				if err != nil {
+					log.Panicln(err.Error())
+				}
+
+				n := GetByID(int64(id))
+
+				if n.ID != -1 {
+
+					var t string
+					utils.ConvertTime(&n.CreationDate, &t)
+					j := jNote{
+						ID:           n.ID,
+						Title:        n.Title,
+						Content:      n.Content,
+						CreationDate: t,
+						AuthorID:     n.AuthorID,
+					}
+
+					json.NewEncoder(res).Encode(j)
+					res.WriteHeader(http.StatusOK)
+				} else {
+					//user not in database
+					message := "Note not found"
+					res.WriteHeader(http.StatusNotFound)
+					json.NewEncoder(res).Encode(utils.NewResponse(message))
+					log.Printf(message)
+				}
+			} else {
+				res.WriteHeader(http.StatusMethodNotAllowed)
+			}
+		} else {
+			res.WriteHeader(http.StatusBadRequest)
 		}
-		note := GetByID(int64(id))
-
-		if note.ID == -1 {
-			//note not found
-			res.WriteHeader(http.StatusNotFound)
-		}
-
-		json.NewEncoder(res).Encode(note)
-
-	} else if req.Method == http.MethodPatch {
-		// updating a note
 	}
+
+	utils.LogRequest(res, req)
 }
