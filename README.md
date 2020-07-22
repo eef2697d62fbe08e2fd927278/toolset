@@ -21,7 +21,11 @@ Besides using some of the Go Standard Packages, we also use Tools such as
 - [Mux](https://github.com/gorilla/mux)
 - [go-mysql-driver](https://github.com/go-sql-driver/mysql)
 
-## Go / Files
+## Go / Files / Database
+
+### Schema
+
+![MySQL Schema](./docs/img/schema.png)
 
 ### Variables
 

@@ -94,3 +94,32 @@ func GetByID(id int64) Note {
 	utils.ConvertTime(&n.CreationDate, &timeStr)
 	return n
 }
+
+// GetTagIDs : gets all the tagIDs linked to the noteID in the link table
+func (n *Note) GetTagIDs() []int64 {
+	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
+	if err != nil {
+		log.Panicln(err.Error())
+	}
+	defer db.Close()
+
+	tagRows, err := db.Query("SELECT tag_id FROM lktbl_tag WHERE note_id = ?", n.ID)
+	if err != nil {
+		log.Panicln(err.Error())
+	}
+	defer tagRows.Close()
+
+	var tArr []int64
+	for i := 0; tagRows.Next(); i++ {
+		err := tagRows.Scan(&tArr[i])
+		if err != nil {
+			log.Panicln(err.Error())
+		}
+	}
+
+	if tagRows.Err() != nil {
+		log.Panicln(tagRows.Err())
+	}
+
+	return tArr
+}

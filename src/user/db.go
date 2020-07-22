@@ -77,6 +77,8 @@ func GetByID(id int64) User {
 	return u
 }
 
+//TODO: is this neede, because of privacy concerns
+
 // GetByEmail : returns the selected user from the database as an object
 func GetByEmail(e string) User {
 	db, err := sql.Open("mysql", "toolset_select:password@/toolset")

@@ -49,7 +49,7 @@ func GetByID(id int64) Tag {
 	}
 	defer db.Close()
 
-	tagRows, err := db.Query("SELECT id, name FROM tbl.Tag WHERE id = ?", id)
+	tagRows, err := db.Query("SELECT id, name FROM tbl_tag WHERE id = ?", id)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -79,7 +79,7 @@ func GetByName(name string) Tag {
 	defer db.Close()
 
 	name = strings.ToLower(name)
-	tagRows, err := db.Query("SELECT id, name FROM tbl.Tag WHERE name = ?", name)
+	tagRows, err := db.Query("SELECT id, name FROM tbl_tag WHERE name = ?", name)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -118,4 +118,33 @@ func LinkNote(nID, tID int64) {
 	if err != nil {
 		log.Panicln(err.Error())
 	}
+}
+
+// GetNoteIDs : gets all the noteIDs linked to the tagID in the link table
+func (t *Tag) GetNoteIDs() []int64 {
+	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
+	if err != nil {
+		log.Panicln(err.Error())
+	}
+	defer db.Close()
+
+	tagRows, err := db.Query("SELECT note_id FROM lktbl_tag WHERE tag_id = ?", t.ID)
+	if err != nil {
+		log.Panicln(err.Error())
+	}
+	defer tagRows.Close()
+
+	var nArr []int64
+	for i := 0; tagRows.Next(); i++ {
+		err := tagRows.Scan(&nArr[i])
+		if err != nil {
+			log.Panicln(err.Error())
+		}
+	}
+
+	if tagRows.Err() != nil {
+		log.Panicln(tagRows.Err())
+	}
+
+	return nArr
 }

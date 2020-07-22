@@ -70,8 +70,8 @@ func APIHandleCreate(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-// APIHandleByID : handles requests for users with a specified id
-func APIHandleByID(res http.ResponseWriter, req *http.Request) {
+// Handle : handles api requests for users
+func Handle(res http.ResponseWriter, req *http.Request) {
 	for _, i := range req.Header["Accept"] {
 		if i == "application/json" {
 			if req.Method == http.MethodGet {
@@ -79,22 +79,30 @@ func APIHandleByID(res http.ResponseWriter, req *http.Request) {
 				res.Header().Set("Content-Type", "application/json")
 
 				params := mux.Vars(req)
+
 				id, err := strconv.Atoi(params["id"])
 				if err != nil {
 					log.Panicln(err.Error())
 				}
 
-				u := GetByID(int64(id))
+				var u User
+				u.ID = -1
+
+				if params["username"] != "" {
+					u = GetByUsername(params["username"])
+				} else if id == 0 {
+					u = GetByID(int64(id))
+				}
 
 				if u.ID != -1 {
 
-					var t string
-					utils.ConvertTime(&u.CreationDate, &t)
+					var tm string
+					utils.ConvertTime(&u.CreationDate, &tm)
 					j := jUser{
 						ID:           u.ID,
 						Username:     u.Username,
 						Email:        u.Email,
-						CreationDate: t,
+						CreationDate: tm,
 					}
 
 					json.NewEncoder(res).Encode(j)
@@ -107,42 +115,10 @@ func APIHandleByID(res http.ResponseWriter, req *http.Request) {
 					log.Printf(message)
 				}
 			} else {
-				res.WriteHeader(http.StatusBadRequest)
+				res.WriteHeader(http.StatusMethodNotAllowed)
 			}
-		}
-	}
-}
-
-/*
-	frontend handlers
-*/
-
-// HandleByID : handles frontend requests
-func HandleByID(res http.ResponseWriter, req *http.Request) {
-	for _, i := range req.Header["Accept"] {
-		if i == "text/*" {
-			if req.Method == http.MethodGet {
-
-				res.Header().Set("Content-Type", "text/html")
-
-				params := mux.Vars(req)
-				id, err := strconv.Atoi(params["id"])
-				if err != nil {
-					log.Panicln(err.Error())
-				}
-
-				user := GetByID(int64(id))
-
-				if user.ID != -1 {
-					log.Print("user found")
-					res.Write(user.RenderPage())
-				} else {
-					// user not found in database
-					res.Write([]byte("User Not Found"))
-					res.WriteHeader(http.StatusNotFound)
-				}
-
-			}
+		} else {
+			res.WriteHeader(http.StatusBadRequest)
 		}
 	}
 
