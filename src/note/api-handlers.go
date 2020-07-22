@@ -84,7 +84,23 @@ func HandleTags(res http.ResponseWriter, req *http.Request) {
 
 				n := GetByID(int64(id))
 
+				var tArr []int64
+
 				if n.ID != -1 {
+					tArr = n.GetTagIDs()
+
+					type tagArr struct {
+						NoteID int64   `json:"note_id"`
+						Tags   []int64 `json:"tag_id"`
+					}
+
+					j := tagArr{
+						NoteID: n.ID,
+						Tags:   tArr,
+					}
+
+					json.NewEncoder(res).Encode(j)
+					res.WriteHeader(http.StatusOK)
 				} else {
 					//user not in database
 					message := "Note not found"
