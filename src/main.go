@@ -15,7 +15,7 @@ func main() {
 
 	// user frontend handlers
 	//router.HandleFunc("/user", user.Handler)
-	router.HandleFunc("/user/{id}", user.HandleByID)
+	//router.HandleFunc("/user/{id}", user.HandleByID)
 
 	// note frontend handlers
 	router.HandleFunc("/note", note.Handler)
@@ -26,7 +26,8 @@ func main() {
 
 	// user api handlers
 	apiRouter.HandleFunc("/user", user.APIHandleCreate)
-	apiRouter.HandleFunc("/user/{id}", user.APIHandleByID)
+	apiRouter.HandleFunc("/user/id/{id}", user.APIHandleByID)
+	apiRouter.HandleFunc("/user/{username}", user.APIHandleByID)
 
 	//note api handlers
 	//apiRouter.HandleFunc("/note", note.APIHandleCreate)
