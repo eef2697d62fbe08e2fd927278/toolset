@@ -49,7 +49,7 @@ func GetByID(id int64) Tag {
 	}
 	defer db.Close()
 
-	tagRows, err := db.Query("SELECT id, name FROM tbl.Tag WHERE id = ?", id)
+	tagRows, err := db.Query("SELECT id, name FROM tbl_tag WHERE id = ?", id)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -79,7 +79,7 @@ func GetByName(name string) Tag {
 	defer db.Close()
 
 	name = strings.ToLower(name)
-	tagRows, err := db.Query("SELECT id, name FROM tbl.Tag WHERE name = ?", name)
+	tagRows, err := db.Query("SELECT id, name FROM tbl_tag WHERE name = ?", name)
 	if err != nil {
 		log.Panicln(err.Error())
 	}

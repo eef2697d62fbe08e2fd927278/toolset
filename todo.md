@@ -11,6 +11,7 @@
 - [ ] format log messages for example `log.Println("ERROR: %s", err)`
 - [ ] make a function that takes response parameters and logs them to the console, that way it can be executed at the end of every api answer
 - [ ] maybe split the api handlers and the frontend handlers into seperate files
+- [ ] export schema as png to docs/imgs/schema.png
 
 ## tasks
 
