@@ -6,6 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/youngtrashbag/toolset/src/note"
+	"github.com/youngtrashbag/toolset/src/tag"
 	"github.com/youngtrashbag/toolset/src/user"
 )
 
@@ -36,7 +37,8 @@ func main() {
 
 	/* tag api handlers */
 	//apiRouter.HandleFunc("/tag", tag.APIHandleCreate)
-	//apiRouter.HandleFunc("/tag/{id}", tag.APIHandleByID)
+	apiRouter.HandleFunc("/tag/{id}", tag.Handle)
+	apiRouter.HandleFunc("/tag/{id}/notes", tag.HandleNotes)
 
 	port := ":8000"
 

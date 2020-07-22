@@ -37,13 +37,13 @@ func Handle(res http.ResponseWriter, req *http.Request) {
 
 				if n.ID != -1 {
 
-					var t string
-					utils.ConvertTime(&n.CreationDate, &t)
+					var tm string
+					utils.ConvertTime(&n.CreationDate, &tm)
 					j := jNote{
 						ID:           n.ID,
 						Title:        n.Title,
 						Content:      n.Content,
-						CreationDate: t,
+						CreationDate: tm,
 						AuthorID:     n.AuthorID,
 					}
 

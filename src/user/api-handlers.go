@@ -96,13 +96,13 @@ func Handle(res http.ResponseWriter, req *http.Request) {
 
 				if u.ID != -1 {
 
-					var t string
-					utils.ConvertTime(&u.CreationDate, &t)
+					var tm string
+					utils.ConvertTime(&u.CreationDate, &tm)
 					j := jUser{
 						ID:           u.ID,
 						Username:     u.Username,
 						Email:        u.Email,
-						CreationDate: t,
+						CreationDate: tm,
 					}
 
 					json.NewEncoder(res).Encode(j)
