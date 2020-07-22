@@ -112,39 +112,3 @@ func APIHandleByID(res http.ResponseWriter, req *http.Request) {
 		}
 	}
 }
-
-/*
-	frontend handlers
-*/
-
-// HandleByID : handles frontend requests
-func HandleByID(res http.ResponseWriter, req *http.Request) {
-	for _, i := range req.Header["Accept"] {
-		if i == "text/*" {
-			if req.Method == http.MethodGet {
-
-				res.Header().Set("Content-Type", "text/html")
-
-				params := mux.Vars(req)
-				id, err := strconv.Atoi(params["id"])
-				if err != nil {
-					log.Panicln(err.Error())
-				}
-
-				user := GetByID(int64(id))
-
-				if user.ID != -1 {
-					log.Print("user found")
-					res.Write(user.RenderPage())
-				} else {
-					// user not found in database
-					res.Write([]byte("User Not Found"))
-					res.WriteHeader(http.StatusNotFound)
-				}
-
-			}
-		}
-	}
-
-	utils.LogRequest(res, req)
-}
