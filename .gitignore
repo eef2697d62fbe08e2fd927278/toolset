@@ -134,4 +134,5 @@ fabric.properties
 
 # mysql credentials
 src/utils/*user-credentials.txt*
+src/database/*user-credentials.txt*
 src/mysql/*create-user-secure.sql*
