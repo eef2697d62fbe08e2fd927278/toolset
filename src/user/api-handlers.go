@@ -48,18 +48,23 @@ func APIHandleCreate(res http.ResponseWriter, req *http.Request) {
 
 				id := u.Insert()
 
-				if id != -1 {
-					// if id == -1 then the user could not be created
+				if id == -1 {
+					message := "Could not Insert User into Database"
+					log.Panicln(message)
+					json.NewEncoder(res).Encode(utils.NewResponse(message))
+					res.WriteHeader(http.StatusBadRequest)
+				} else if id == -2 {
+
+					message := "Username or Email already taken"
+					log.Panicln(message)
+					json.NewEncoder(res).Encode(utils.NewResponse(message))
+					res.WriteHeader(http.StatusBadRequest)
+				} else {
 					message := "Inserted User with ID " + string(id) + " into database\n"
 					log.Println(message)
 					json.NewEncoder(res).Encode(utils.NewResponse(message))
 
 					res.WriteHeader(http.StatusCreated)
-				} else {
-					message := "Could not Insert User into Database"
-					log.Panicln(message)
-					json.NewEncoder(res).Encode(utils.NewResponse(message))
-					res.WriteHeader(http.StatusBadRequest)
 				}
 			} else {
 				res.WriteHeader(http.StatusMethodNotAllowed)
@@ -70,8 +75,8 @@ func APIHandleCreate(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-// Handle : handles api requests for users
-func Handle(res http.ResponseWriter, req *http.Request) {
+// HandleByID : handles api requests for users by id
+func HandleByID(res http.ResponseWriter, req *http.Request) {
 	for _, i := range req.Header["Accept"] {
 		if i == "application/json" {
 			if req.Method == http.MethodGet {
@@ -85,17 +90,15 @@ func Handle(res http.ResponseWriter, req *http.Request) {
 					log.Panicln(err.Error())
 				}
 
-				var u User
-				u.ID = -1
+				u := GetByID(int64(id))
 
-				if params["username"] != "" {
-					u = GetByUsername(params["username"])
-				} else if id == 0 {
-					u = GetByID(int64(id))
-				}
-
-				if u.ID != -1 {
-
+				if u.ID == -1 {
+					//user not in database
+					message := "User not found"
+					res.WriteHeader(http.StatusNotFound)
+					json.NewEncoder(res).Encode(utils.NewResponse(message))
+					log.Printf(message)
+				} else {
 					var tm string
 					utils.ConvertTime(&u.CreationDate, &tm)
 					j := jUser{
@@ -107,12 +110,6 @@ func Handle(res http.ResponseWriter, req *http.Request) {
 
 					json.NewEncoder(res).Encode(j)
 					res.WriteHeader(http.StatusOK)
-				} else {
-					//user not in database
-					message := "User not found"
-					res.WriteHeader(http.StatusNotFound)
-					json.NewEncoder(res).Encode(utils.NewResponse(message))
-					log.Printf(message)
 				}
 			} else {
 				res.WriteHeader(http.StatusMethodNotAllowed)

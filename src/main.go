@@ -27,17 +27,17 @@ func main() {
 
 	/* user api handlers */
 	apiRouter.HandleFunc("/user", user.APIHandleCreate)
-	apiRouter.HandleFunc("/user/id/{id}", user.Handle)
+	apiRouter.HandleFunc("/user/id/{id}", user.HandleByID)
 	//apiRouter.HandleFunc("/user/{username}", user.Handle)	//TODO: do i want to add this, becuase it would disrupt api design
 
 	/* note api handlers */
 	//apiRouter.HandleFunc("/note", note.APIHandleCreate)
-	apiRouter.HandleFunc("/note/id/{id}", note.Handle)
+	apiRouter.HandleFunc("/note/id/{id}", note.HandleByID)
 	apiRouter.HandleFunc("/note/id/{id}/tags", note.HandleTags)
 
 	/* tag api handlers */
 	//apiRouter.HandleFunc("/tag", tag.APIHandleCreate)
-	apiRouter.HandleFunc("/tag/{id}", tag.Handle)
+	apiRouter.HandleFunc("/tag/{id}", tag.HandleByID)
 	apiRouter.HandleFunc("/tag/{id}/notes", tag.HandleNotes)
 
 	port := ":8000"

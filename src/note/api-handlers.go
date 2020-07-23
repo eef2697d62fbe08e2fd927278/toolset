@@ -18,8 +18,8 @@ type jNote struct {
 	AuthorID     int64  `json:"author_id"`
 }
 
-// Handle : handles api requests for notes
-func Handle(res http.ResponseWriter, req *http.Request) {
+// HandleByID : handles api requests for notes by id
+func HandleByID(res http.ResponseWriter, req *http.Request) {
 	for _, i := range req.Header["Accept"] {
 		if i == "application/json" {
 			if req.Method == http.MethodGet {
@@ -35,8 +35,13 @@ func Handle(res http.ResponseWriter, req *http.Request) {
 
 				n := GetByID(int64(id))
 
-				if n.ID != -1 {
-
+				if n.ID == -1 {
+					//user not in database
+					message := "Note not found"
+					res.WriteHeader(http.StatusNotFound)
+					json.NewEncoder(res).Encode(utils.NewResponse(message))
+					log.Printf(message)
+				} else {
 					var tm string
 					utils.ConvertTime(&n.CreationDate, &tm)
 					j := jNote{
@@ -49,12 +54,6 @@ func Handle(res http.ResponseWriter, req *http.Request) {
 
 					json.NewEncoder(res).Encode(j)
 					res.WriteHeader(http.StatusOK)
-				} else {
-					//user not in database
-					message := "Note not found"
-					res.WriteHeader(http.StatusNotFound)
-					json.NewEncoder(res).Encode(utils.NewResponse(message))
-					log.Printf(message)
 				}
 			} else {
 				res.WriteHeader(http.StatusMethodNotAllowed)
@@ -86,7 +85,13 @@ func HandleTags(res http.ResponseWriter, req *http.Request) {
 
 				var tArr []int64
 
-				if n.ID != -1 {
+				if n.ID == -1 {
+					//user not in database
+					message := "Note not found"
+					res.WriteHeader(http.StatusNotFound)
+					json.NewEncoder(res).Encode(utils.NewResponse(message))
+					log.Printf(message)
+				} else {
 					tArr = n.GetTagIDs()
 
 					type tagArr struct {
@@ -101,12 +106,6 @@ func HandleTags(res http.ResponseWriter, req *http.Request) {
 
 					json.NewEncoder(res).Encode(j)
 					res.WriteHeader(http.StatusOK)
-				} else {
-					//user not in database
-					message := "Note not found"
-					res.WriteHeader(http.StatusNotFound)
-					json.NewEncoder(res).Encode(utils.NewResponse(message))
-					log.Printf(message)
 				}
 			} else {
 				res.WriteHeader(http.StatusMethodNotAllowed)
