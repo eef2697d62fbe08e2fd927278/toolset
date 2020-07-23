@@ -10,6 +10,15 @@ import (
 
 // Insert : saves a user in the database
 func (u *User) Insert() int64 {
+
+	// validate, if -1 then there is no entry in db -> continue
+	if GetByEmail(u.Email).ID != -1 {
+		return -2
+	}
+	if GetByUsername(u.Username).ID != -1 {
+		return -2
+	}
+
 	// connection to database
 	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
 	if err != nil {

@@ -33,8 +33,13 @@ func Handle(res http.ResponseWriter, req *http.Request) {
 
 				t := GetByID(int64(id))
 
-				if t.ID != -1 {
-
+				if t.ID == -1 {
+					//user not in database
+					message := "Note not found"
+					res.WriteHeader(http.StatusNotFound)
+					json.NewEncoder(res).Encode(utils.NewResponse(message))
+					log.Printf(message)
+				} else {
 					var tm string
 					utils.ConvertTime(&t.CreationDate, &tm)
 					j := jTag{
@@ -45,12 +50,6 @@ func Handle(res http.ResponseWriter, req *http.Request) {
 
 					json.NewEncoder(res).Encode(j)
 					res.WriteHeader(http.StatusOK)
-				} else {
-					//user not in database
-					message := "Note not found"
-					res.WriteHeader(http.StatusNotFound)
-					json.NewEncoder(res).Encode(utils.NewResponse(message))
-					log.Printf(message)
 				}
 			} else {
 				res.WriteHeader(http.StatusMethodNotAllowed)
@@ -82,7 +81,13 @@ func HandleNotes(res http.ResponseWriter, req *http.Request) {
 
 				var tArr []int64
 
-				if t.ID != -1 {
+				if t.ID == -1 {
+					//user not in database
+					message := "Tag not found"
+					res.WriteHeader(http.StatusNotFound)
+					json.NewEncoder(res).Encode(utils.NewResponse(message))
+					log.Printf(message)
+				} else {
 					tArr = t.GetNoteIDs()
 
 					type tagArr struct {
@@ -97,12 +102,6 @@ func HandleNotes(res http.ResponseWriter, req *http.Request) {
 
 					json.NewEncoder(res).Encode(j)
 					res.WriteHeader(http.StatusOK)
-				} else {
-					//user not in database
-					message := "Tag not found"
-					res.WriteHeader(http.StatusNotFound)
-					json.NewEncoder(res).Encode(utils.NewResponse(message))
-					log.Printf(message)
 				}
 			} else {
 				res.WriteHeader(http.StatusMethodNotAllowed)

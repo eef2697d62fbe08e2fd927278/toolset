@@ -44,3 +44,10 @@ Each Package, that is related to a feature of the Project, should contain a hand
 Lets say, we have a package called `user`. This Package will be defined in a Subfolder also called `user`. In this Package we will have the main file called `user.go` where e.g. a struct is defined.  
 In the same folder we will also add a file called `db.go` with all functions related to the database inside.  
 Since we also use an API in this Project you will have to add yet another file called `handlers.go`, where all http related handling functions will be stored, wether handling rest-api requests or just plain `text/*`(or html) requests.
+
+### Return Values
+
+When working with the Database and unique entries, we needed to specify return codes
+
+1. `-1` Entry not found
+2. `-2` Entry has conflict with existing entry (uniqe)
