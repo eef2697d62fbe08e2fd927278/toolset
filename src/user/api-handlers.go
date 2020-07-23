@@ -76,7 +76,7 @@ func APIHandleCreate(res http.ResponseWriter, req *http.Request) {
 }
 
 // HandleByID : handles api requests for users by id
-func Handle(res http.ResponseWriter, req *http.Request) {
+func HandleByID(res http.ResponseWriter, req *http.Request) {
 	for _, i := range req.Header["Accept"] {
 		if i == "application/json" {
 			if req.Method == http.MethodGet {
