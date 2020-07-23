@@ -75,7 +75,7 @@ func APIHandleCreate(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-// Handle : handles api requests for users
+// HandleByID : handles api requests for users by id
 func Handle(res http.ResponseWriter, req *http.Request) {
 	for _, i := range req.Header["Accept"] {
 		if i == "application/json" {
@@ -90,14 +90,7 @@ func Handle(res http.ResponseWriter, req *http.Request) {
 					log.Panicln(err.Error())
 				}
 
-				var u User
-				u.ID = -1
-
-				if params["username"] != "" {
-					u = GetByUsername(params["username"])
-				} else if id == 0 {
-					u = GetByID(int64(id))
-				}
+				u := GetByID(int64(id))
 
 				if u.ID == -1 {
 					//user not in database

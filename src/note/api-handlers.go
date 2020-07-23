@@ -18,8 +18,8 @@ type jNote struct {
 	AuthorID     int64  `json:"author_id"`
 }
 
-// Handle : handles api requests for notes
-func Handle(res http.ResponseWriter, req *http.Request) {
+// HandleByID : handles api requests for notes by id
+func HandleByID(res http.ResponseWriter, req *http.Request) {
 	for _, i := range req.Header["Accept"] {
 		if i == "application/json" {
 			if req.Method == http.MethodGet {

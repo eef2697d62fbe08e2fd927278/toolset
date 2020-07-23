@@ -16,8 +16,8 @@ type jTag struct {
 	CreationDate string `json:"creation_date"`
 }
 
-// Handle : handles api requests for notes
-func Handle(res http.ResponseWriter, req *http.Request) {
+// HandleByID : handles api requests for tags by id
+func HandleByID(res http.ResponseWriter, req *http.Request) {
 	for _, i := range req.Header["Accept"] {
 		if i == "application/json" {
 			if req.Method == http.MethodGet {
