@@ -49,5 +49,11 @@ Since we also use an API in this Project you will have to add yet another file c
 
 When working with the Database and unique entries, we needed to specify return codes
 
-1. `-1` Entry not found
+#### Inserting
+
+1. `-1` Entry could not be inserted
 2. `-2` Entry has conflict with existing entry (uniqe)
+
+#### Selecting
+
+1. `-1` Entry not found
