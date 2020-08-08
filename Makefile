@@ -1,4 +1,4 @@
-GOPATH = .
+GOPATH = $(shell pwd)
 
 build_frontend:
 	go build -a $(GOPATH)/cmd/frontend -o $(GOPATH)/bin/frontend.exe
