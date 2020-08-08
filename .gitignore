@@ -133,6 +133,6 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/go,visualstudiocode,jetbrains
 
 # mysql credentials
-cmd/server/utils/*user-credentials.txt*
-cmd/server/database/*user-credentials.txt*
-cmd/server/mysql/*create-user-secure.sql*
+cmd/backend/utils/*user-credentials.txt*
+cmd/backend/database/*user-credentials.txt*
+cmd/backend/mysql/*create-user-secure.sql*
