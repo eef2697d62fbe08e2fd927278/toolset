@@ -11,7 +11,7 @@ import (
 // Insert : saves a user in the database
 func (u *User) Insert() int64 {
 
-	TODO: do i really need validation here, or do i handle that in frontend ?!?!
+	//TODO: do i really need validation here, or do i handle that in frontend ?!?!
 
 	// validate, if -1 then there is no entry in db -> continue
 	if GetByEmail(u.Email).ID != -1 {
@@ -161,4 +161,3 @@ func GetByUsername(n string) User {
 	utils.ConvertTime(&u.CreationDate, &timeStr)
 	return u
 }
-

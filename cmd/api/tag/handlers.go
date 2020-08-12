@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/youngtrashbag/toolset/src/utils"
+	"github.com/youngtrashbag/toolset/pgk/utils"
 )
 
 type jTag struct {
@@ -59,7 +59,7 @@ func HandleByID(res http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	utils.LogRequest(res, req)
+	utils.LogRequest(req)
 }
 
 // HandleNotes : handles api requests for noteIDs for a specific tag
@@ -111,5 +111,5 @@ func HandleNotes(res http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	utils.LogRequest(res, req)
+	utils.LogRequest(req)
 }

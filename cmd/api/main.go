@@ -5,9 +5,10 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/youngtrashbag/toolset/src/note"
-	"github.com/youngtrashbag/toolset/src/tag"
-	"github.com/youngtrashbag/toolset/src/user"
+	"github.com/youngtrashbag/toolset/cmd/api/note"
+	"github.com/youngtrashbag/toolset/cmd/api/tag"
+	"github.com/youngtrashbag/toolset/cmd/api/user"
+	"github.com/youngtrashbag/toolset/pkg/utils"
 )
 
 func main() {
@@ -18,16 +19,14 @@ func main() {
 
 	/* user api handlers */
 	apiRouter.HandleFunc("/user", user.APIHandleCreate)
-	apiRouter.HandleFunc("/user/id/{id}", user.HandleByID)
+	apiRouter.HandleFunc("/user/{id}", user.HandleByID)
 	//apiRouter.HandleFunc("/user/{username}", user.Handle)	//TODO: do i want to add this, becuase it would disrupt api design
 
 	/* note api handlers */
-	//apiRouter.HandleFunc("/note", note.APIHandleCreate)
-	apiRouter.HandleFunc("/note/id/{id}", note.HandleByID)
-	apiRouter.HandleFunc("/note/id/{id}/tags", note.HandleTags)
+	apiRouter.HandleFunc("/note/{id}", note.HandleByID)
+	apiRouter.HandleFunc("/note/{id}/tags", note.HandleTags)
 
 	/* tag api handlers */
-	//apiRouter.HandleFunc("/tag", tag.APIHandleCreate)
 	apiRouter.HandleFunc("/tag/{id}", tag.HandleByID)
 	apiRouter.HandleFunc("/tag/{id}/notes", tag.HandleNotes)
 
@@ -59,7 +58,7 @@ func Handler(res http.ResponseWriter, req *http.Request) {
 		statusCode = 404
 	}
 
-	log.Printf("%s Method on \"%s\", StatusCode:%d, Message:\"%s\"\n", req.Method, req.URL.Path, statusCode, message)
+	utils.LogRequest(req)
 
 	res.WriteHeader(statusCode)
 	res.Write([]byte(message))

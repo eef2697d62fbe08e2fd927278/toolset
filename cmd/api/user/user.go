@@ -5,8 +5,6 @@ import (
 	"encoding/hex"
 	"strings"
 	"time"
-
-	_ "github.com/go-sql-driver/mysql" // this is needed for mysql
 )
 
 // User : a struct, so new users can be added to the site
@@ -36,3 +34,4 @@ func hashToSha256(p string) string {
 	hashed := sha256.Sum256([]byte(p))
 	return hex.EncodeToString(hashed[:])
 }
+

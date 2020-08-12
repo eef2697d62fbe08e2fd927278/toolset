@@ -9,7 +9,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/youngtrashbag/toolset/src/utils"
+	"github.com/youngtrashbag/toolset/pkg/utils"
 )
 
 type jUser struct {
@@ -119,5 +119,5 @@ func HandleByID(res http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	utils.LogRequest(res, req)
+	utils.LogRequest(req)
 }
