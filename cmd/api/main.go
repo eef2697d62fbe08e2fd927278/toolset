@@ -14,15 +14,6 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/", Handler)
 
-	/* user frontend handlers */
-	//router.HandleFunc("/user", user.Handler)
-	//router.HandleFunc("/user/{id}", user.HandleByID)
-
-	/* note frontend handlers */
-	//router.HandleFunc("/note", note.Handler)
-
-	/* tag frontend handlers */
-
 	apiRouter := router.PathPrefix("/api").Subrouter()
 
 	/* user api handlers */
