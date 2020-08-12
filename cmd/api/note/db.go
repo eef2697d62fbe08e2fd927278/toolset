@@ -6,15 +6,15 @@ import (
 
 	_ "github.com/go-sql-driver/mysql" // this is needed for mysql
 
-	"github.com/youngtrashbag/toolset/src/tag"
-	"github.com/youngtrashbag/toolset/src/utils"
+	"github.com/youngtrashbag/toolset/cmd/api/tag"
+	"github.com/youngtrashbag/toolset/pkg/utils"
 )
 
 // Insert : saves a user in the database and returns the id of said db entry
 func (n *Note) Insert() int64 {
 
 	// connection to database
-	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
+	db, err := sql.Open("mysql", utils.CNInsert)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -61,7 +61,7 @@ func (n *Note) Insert() int64 {
 
 // GetByID : returns the selected note from the database as an object
 func GetByID(id int64) Note {
-	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
+	db, err := sql.Open("mysql", utils.CNSelect)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -97,7 +97,7 @@ func GetByID(id int64) Note {
 
 // GetTagIDs : gets all the tagIDs linked to the noteID in the link table
 func (n *Note) GetTagIDs() []int64 {
-	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
+	db, err := sql.Open("mysql", utils.CNSelect)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -123,3 +123,4 @@ func (n *Note) GetTagIDs() []int64 {
 
 	return tArr
 }
+

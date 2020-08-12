@@ -6,12 +6,12 @@ import (
 	"strings"
 
 	_ "github.com/go-sql-driver/mysql" // this is needed for mysql
-	"github.com/youngtrashbag/toolset/src/utils"
+	"github.com/youngtrashbag/toolset/pkg/utils"
 )
 
 // Insert : saves tag to db and returns id of entry
 func (t *Tag) Insert() int64 {
-	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
+	db, err := sql.Open("mysql", utils.CNInsert)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -43,7 +43,7 @@ func (t *Tag) Insert() int64 {
 
 // GetByID : returns a tag object from the database
 func GetByID(id int64) Tag {
-	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
+	db, err := sql.Open("mysql", utils.CNSelect)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -72,7 +72,7 @@ func GetByID(id int64) Tag {
 
 // GetByName : return a tag searched for by its name
 func GetByName(name string) Tag {
-	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
+	db, err := sql.Open("mysql", utils.CNSelect)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -102,7 +102,7 @@ func GetByName(name string) Tag {
 
 // LinkNote : this links the noteID and the tagId together via the linktable
 func LinkNote(nID, tID int64) {
-	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
+	db, err := sql.Open("mysql", utils.CNInsert)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -122,7 +122,7 @@ func LinkNote(nID, tID int64) {
 
 // GetNoteIDs : gets all the noteIDs linked to the tagID in the link table
 func (t *Tag) GetNoteIDs() []int64 {
-	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
+	db, err := sql.Open("mysql", utils.CNSelect)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -148,3 +148,4 @@ func (t *Tag) GetNoteIDs() []int64 {
 
 	return nArr
 }
+

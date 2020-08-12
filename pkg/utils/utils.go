@@ -1,11 +1,9 @@
 package utils
 
 import (
-	//"database/sql"
 	"log"
 	"net/http"
 	"time"
-	// _ "github.com/go-sql-driver/mysql"
 )
 
 // Response : a struct for json responses
@@ -20,6 +18,12 @@ func NewResponse(m string) Response {
 
 	return r
 }
+
+// CNInsert : Stands for "ConnectionStatementInsert"
+var CNInsert = "toolset_insert:password@/toolset"
+
+// CNSelect : Stands for "ConnectionStatementSelect"
+var CNSelect = "toolset_select:password@/toolset"
 
 // ConvertTime : convert the time from go to a string,
 // so it complies with mysql standard for DATETIME.
@@ -55,3 +59,4 @@ func ConvertTime(t *time.Time, s *string) {
 func LogRequest(res http.ResponseWriter, req *http.Request) {
 	log.Printf("Method:\"%s\" on Route:\"%s\"\n\tResponse Code:\"%s\"", req.Method, req.URL.Path, res.Header().Get("Status-Code"))
 }
+

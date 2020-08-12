@@ -5,11 +5,13 @@ import (
 	"log"
 
 	_ "github.com/go-sql-driver/mysql" // this is needed for mysql
-	"github.com/youngtrashbag/toolset/src/utils"
+	"github.com/youngtrashbag/toolset/pkg/utils"
 )
 
 // Insert : saves a user in the database
 func (u *User) Insert() int64 {
+
+	TODO: do i really need validation here, or do i handle that in frontend ?!?!
 
 	// validate, if -1 then there is no entry in db -> continue
 	if GetByEmail(u.Email).ID != -1 {
@@ -20,7 +22,7 @@ func (u *User) Insert() int64 {
 	}
 
 	// connection to database
-	db, err := sql.Open("mysql", "toolset_insert:password@/toolset")
+	db, err := sql.Open("mysql", util.CNInsert)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -52,7 +54,7 @@ func (u *User) Insert() int64 {
 
 // GetByID : returns the selected user from the utils as an object
 func GetByID(id int64) User {
-	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
+	db, err := sql.Open("mysql", utils.CNSelect)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -90,7 +92,7 @@ func GetByID(id int64) User {
 
 // GetByEmail : returns the selected user from the database as an object
 func GetByEmail(e string) User {
-	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
+	db, err := sql.Open("mysql", utils.CNSelect)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -126,7 +128,7 @@ func GetByEmail(e string) User {
 
 // GetByUsername : returns the selected user from the database as an object
 func GetByUsername(n string) User {
-	db, err := sql.Open("mysql", "toolset_select:password@/toolset")
+	db, err := sql.Open("mysql", utils.CNSelect)
 	if err != nil {
 		log.Panicln(err.Error())
 	}
@@ -159,3 +161,4 @@ func GetByUsername(n string) User {
 	utils.ConvertTime(&u.CreationDate, &timeStr)
 	return u
 }
+
