@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/youngtrashbag/toolset/pgk/utils"
+	"github.com/youngtrashbag/toolset/pkg/utils"
 )
 
 type jTag struct {

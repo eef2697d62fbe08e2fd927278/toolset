@@ -22,7 +22,7 @@ func (u *User) Insert() int64 {
 	}
 
 	// connection to database
-	db, err := sql.Open("mysql", util.CNInsert)
+	db, err := sql.Open("mysql", utils.CNInsert)
 	if err != nil {
 		log.Panicln(err.Error())
 	}

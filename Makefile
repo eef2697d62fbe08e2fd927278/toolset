@@ -1,10 +1,12 @@
 GOPATH = $(shell pwd)
 
-build_frontend:
-	go build -a $(GOPATH)/cmd/frontend -o $(GOPATH)/bin/frontend.exe
+build_website:
+	mkdir -p $(GOPATH)/bin
+	go build -a $(GOPATH)/cmd/website -o $(GOPATH)/bin
 
-build_backend:
-	go build -a $(GOPATH)/cmd/backend -o $(GOPATH)/bin/backend.exe
+build_api:
+	mkdir -p $(GOPATH)/bin
+	go build $(GOPATH)/cmd/api
 
 build_all:
 	$(MAKE) build_frontend
