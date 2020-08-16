@@ -45,15 +45,3 @@ Lets say, we have a package called `user`. This Package will be defined in a Sub
 In the same folder we will also add a file called `db.go` with all functions related to the database inside.  
 Since we also use an API in this Project you will have to add yet another file called `handlers.go`, where all http related handling functions will be stored, wether handling rest-api requests or just plain `text/*`(or html) requests.
 
-### Return Values
-
-When working with the Database and unique entries, we needed to specify return codes
-
-#### Inserting
-
-1. `-1` Entry could not be inserted
-2. `-2` Entry has conflict with existing entry (uniqe)
-
-#### Selecting
-
-1. `-1` Entry not found
