@@ -9,5 +9,5 @@ build_api:
 	go build -o $(GOPATH)/bin/api -a $(GOPATH)/cmd/api
 
 build_all:
-	$(MAKE) build_frontend
-	$(MAKE) build_backend
+	$(MAKE) build_api
+	$(MAKE) build_website

@@ -2,21 +2,22 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"github.com/gorilla/mux"
-	"github.com/youngtrashbag/toolset/cmd/backend/note"
-	"github.com/youngtrashbag/toolset/src/tag"
-	"github.com/youngtrashbag/toolset/src/user"
+	// "github.com/youngtrashbag/toolset/cmd/website/note"
+	// "github.com/youngtrashbag/toolset/cmd/website/tag"
+	// "github.com/youngtrashbag/toolset/cmd/website/user"
 )
 
 func main() {
 	router := mux.NewRouter()
 
 	/* user handlers */
-	router.HandleFunc("/user", user.Handler)
-	router.HandleFunc("/user/{id}", user.HandleByID)
+	// router.HandleFunc("/user", user.Handler)
+	// router.HandleFunc("/user/{id}", user.HandleByID)
 
 	/* note handlers */
-	router.HandleFunc("/note", note.Handler)
+	// router.HandleFunc("/note", note.Handler)
 
 	/* tag handlers */
 
